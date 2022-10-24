@@ -9,6 +9,7 @@
 
 main:
 	call set_termios_non_canonical
+	call render
 
 game_loop:
 	call input
