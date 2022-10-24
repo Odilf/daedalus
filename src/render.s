@@ -1,7 +1,7 @@
 .data
 
-row: .byte 0
-column: .byte 0
+row: .quad 0
+column: .quad 0
 
 .text
 
@@ -40,8 +40,8 @@ render:
 	# mov $9, %rdx
 	# syscall
 
-	mov $5, row
-	mov $10, column
+	movq $5, row
+	movq $10, column
 	call move_cursor
 
 	# Set initial values
@@ -70,11 +70,11 @@ render_column:
 
 render_column_loop:
 	# Move cursor to 0, 0
-	mov $1, %rax 		# write
-	mov $0, %rdi		# stdout
-	mov $reset_cursor_position, %rsi	# template
-	mov $9, %rdx
-	syscall
+	# mov $1, %rax 		# write
+	# mov $0, %rdi		# stdout
+	# mov $reset_cursor_position, %rsi	# template
+	# mov $9, %rdx
+	# syscall
 
 render_column_loop_end:
 	inc %rdi
