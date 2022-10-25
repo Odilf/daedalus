@@ -13,8 +13,6 @@ angle: .double 0
 speed: .double  0.5
 angle_speed: .double 0.3
 
-eloquent_message: .asciz "COLLIDING, BITCHASS\n"
-
 # GENERAL REMARKS
 
 # In general, the following SSE registers are used: 
@@ -87,12 +85,31 @@ move_left:
 rotate_left:
 	movsd angle, %xmm2
 	addsd angle_speed, %xmm2
-	movsd %xmm2, angle
-	jmp input_end
+	jmp clamp_rotation
 
 rotate_right:
 	movsd angle, %xmm2
 	subsd angle_speed, %xmm2
+	jmp clamp_rotation
+
+clamp_rotation:
+	comisd tau, %xmm2
+	jg sub_pi
+
+	comisd zero, %xmm2
+	jle add_pi
+
+	jmp clamp_end
+
+sub_pi:
+	subsd pi, %xmm2
+	jmp clamp_end
+
+add_pi:
+	addsd pi, %xmm2
+	jmp clamp_end
+
+clamp_end:
 	movsd %xmm2, angle
 	jmp input_end
 

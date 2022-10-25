@@ -2,18 +2,20 @@
 .include "termios.s"
 .include "render.s"
 .include "input.s"
+.include "trig.s"
 
 .global main
 
 .text
 
 main:
+	# jmp epilogue
 	call set_termios_non_canonical
-	call render
+	# call render_start
 
 game_loop:
 	call input
-	call render
+	# call render
 
 	jmp game_loop
 
