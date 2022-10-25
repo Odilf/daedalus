@@ -9,7 +9,7 @@
 .text
 
 main:
-	# jmp epilogue
+	# jmp epilouge
 	call set_termios_non_canonical
 	# call render_start
 

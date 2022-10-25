@@ -93,10 +93,10 @@ rotate_right:
 	jmp clamp_rotation
 
 clamp_rotation:
-	comisd tau, %xmm2
+	comisd pi, %xmm2
 	jae sub_2pi
 
-	comisd zero, %xmm2
+	comisd pi_neg, %xmm2
 	jb add_2pi
 
 	jmp clamp_end
