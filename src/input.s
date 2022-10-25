@@ -94,10 +94,10 @@ rotate_right:
 
 clamp_rotation:
 	comisd tau, %xmm2
-	jg sub_2pi
+	jae sub_2pi
 
 	comisd zero, %xmm2
-	jle add_2pi
+	jb add_2pi
 
 	jmp clamp_end
 
