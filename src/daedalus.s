@@ -1,6 +1,6 @@
 .include "map.s"
 .include "termios.s"
-.include "render.s"
+.include "render/main.s"
 .include "input.s"
 .include "trig.s"
 
@@ -11,7 +11,7 @@
 main:
 	# jmp epilouge
 	call set_termios_non_canonical
-	# call render_start
+	call render_start
 
 game_loop:
 	call input
