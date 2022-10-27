@@ -1,7 +1,8 @@
 .text 
 
-map:
-	# new row
+map_size: 8 
+
+map: 
 	.byte 1
 	.byte 1
 	.byte 1
