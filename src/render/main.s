@@ -17,6 +17,8 @@ go_down: .asciz "\033[1E"
 color_template: .asciz "\033[48;2;%.0f;%.0f;%.0fm "
 
 terminal_background_color: .asciz "\033[48;2;64;0;5m"
+
+newline: .asciz "\n"
 # color_template: .asciz "[%.0f,%.0f,%.0f], "
 # color_template: .asciz "[%d,%d,%d], "
 
@@ -123,6 +125,9 @@ render_end:
 	# Flush buffer
 	# mov $render_buffer, %rdi
 	# call printf
+
+	mov $newline, %rdi
+	call printf
 
 	# Restore callee-saved registers
 	pop %r13
