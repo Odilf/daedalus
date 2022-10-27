@@ -34,10 +34,8 @@ raycast_size: .double 0.1
 # return rax; 
 
 raycast:
-	mov $16, %rax
-	ret
-    # push %rbp
-    # mov %rsp, %rbp
+    push %rbp
+    mov %rsp, %rbp
 	
 	# Save calle-saved register
     push %r15

@@ -37,8 +37,10 @@ shader:
 	# Calculate if we have to draw background or column
 
 	# Move column height to %rdx
+	# mov $0, %rdx
+	# mov column_length_cache(%rdx, %rsi, 8), %rdx
 	mov $0, %rdx
-	mov column_length_cache(%rdx, %rsi, 8), %rdx
+	movb column_length_cache(%rdx), %dl
 
 	# (Hardcoded for now)
 	# mov %rsi, %rdx 
