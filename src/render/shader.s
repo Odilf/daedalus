@@ -1,3 +1,5 @@
+.include "./render/cache_rays.s"
+
 .bss
 
 half_rows: .quad 0
@@ -11,10 +13,6 @@ half: .double 127.5
 min_column_height: .quad 8
 half_min_column_height: .quad 4
 
-# background_color:
-# 	.double 162.0
-# 	.double 103.0
-# 	.double 105.0
 background_color:
 	.double 255.0
 	.double 127.0

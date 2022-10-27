@@ -1,12 +1,5 @@
 .include "render/shader.s"
 
-.bss
-
-row: .quad 0
-column: .quad 0
-
-render_buffer: .skip 4096
-
 .text
 
 clear_screen: .asciz "\033[2J"
@@ -65,7 +58,6 @@ render:
 
 	# %r12 stores column
 	# %r13 stores row
-	movq $0, render_buffer
 
 	# Start at row 0
 	mov $0, %r13
