@@ -37,21 +37,17 @@ shader:
 	# Calculate if we have to draw background or column
 
 	# Move column height to %rdx
-	# mov $0, %rdx
-	# mov column_length_cache(%rdx, %rsi, 8), %rdx
 	mov $0, %rdx
 	movb column_length_cache(%rdx), %dl
-
-	# (Hardcoded for now)
-	# mov %rsi, %rdx 
-	# shl $59, %rdx 
-	# shr $59, %rdx 
 
 	# %rdx has the column height
 
 	# Skip drawing the column if it's too small
 	cmp min_column_height, %rdx
 	jle draw_background
+
+	cmp $32, %rdx
+	jge draw_white
 	
 	# Check if we're inside of a column
 	mov %rdx, %r8
@@ -68,6 +64,12 @@ shader:
 	cmp %rcx, %rdi
 	jg background_lower_half
 
+draw_white:
+	movsd max, %xmm0
+	movsd max, %xmm1
+	movsd max, %xmm2
+
+	jmp shader_end
 
 draw_column:
 	# %rdx has the column size

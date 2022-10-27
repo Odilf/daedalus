@@ -1,9 +1,11 @@
 .bss
+
 last_key: .quad 0
 
 .data
-pos_x: .double 1.0
-pos_y: .double 0.0
+
+pos_x: .double 3.0
+pos_y: .double 3.5
 delta_pos_x: .double 1.0
 delta_pos_y: .double 0.0
 angle: .double 0
@@ -11,7 +13,7 @@ angle: .double 0
 .text
 
 speed: .double  0.5
-angle_speed: .double 0.3
+angle_speed: .double 0.1
 
 # GENERAL REMARKS
 
@@ -157,12 +159,8 @@ check_collision_inside:
 	mulq map_size
 	add %rax, %rdi
 
-	# Store 0 in %rax if it's valid
-	mov $map, %rsi
-	mov (%rsi, %rdi, 1), %rax
-	# and %rsi, %rax
-
-	cmp $0, %rax
+	# Check if that position is 0
+	cmpb $0, map(%rdi)
 	je check_collision_valid
 
 	jmp check_collision_end

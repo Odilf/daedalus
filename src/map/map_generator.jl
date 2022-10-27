@@ -1,5 +1,5 @@
-let
-	map = read("src/map/map.txt", String) 
+function generate_map(input)
+	map = read(input, String) 
 
 	output = ".text \n\n"
 	map_size = split(map, '\n')[1] |> length
@@ -16,3 +16,8 @@ let
 
 	write("src/map/map.s", output)
 end
+
+normal = "src/map/map.txt"
+debug = "src/map/map_debug.txt"
+
+generate_map(debug)

@@ -8,7 +8,7 @@ delta_ray_y: .double 0.0
 
 .text
 
-raycast_size: .double 0.1
+raycast_size: .double 0.01
 
 # Will use %xmm8 to get angle in which it'll get distance for wall
 # distance will be in rax.
@@ -56,8 +56,8 @@ raycast:
     movsd %xmm8, delta_ray_y
 
     # Set xmm9 and xmm10 to x and y respectively
-    movsd %xmm3, %xmm9
-    movsd %xmm4, %xmm10
+    movsd pos_x, %xmm9
+    movsd pos_y, %xmm10
 
 raycast_check:
 	# %r15 holds ray length
