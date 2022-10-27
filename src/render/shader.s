@@ -45,9 +45,6 @@ shader:
 	# Skip drawing the column if it's too small
 	cmp min_column_height, %rdx
 	jle draw_background
-
-	# cmp $32, %rdx
-	# jge draw_white
 	
 	# Check if we're inside of a column
 	mov %rdx, %r8
