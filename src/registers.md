@@ -2,12 +2,13 @@
 
 ## SSE registers
 
-- `%xmm0`: x player position
-- `%xmm1`: y player position
-- `%xmm2`: Player angle
-- `%xmm3`: Color R
-- `%xmm4`: Color G
-- `%xmm5`: Color B
+
+- `%xmm0`: Color R
+- `%xmm1`: Color G
+- `%xmm2`: Color B
+- `%xmm3`: x player position
+- `%xmm4`: y player position
+- `%xmm5`: Player angle
 - `%xmm6`: unused
 - `%xmm7`: unused
 - `%xmm8`: Input for `sin` and `cos`

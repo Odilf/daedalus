@@ -1,20 +1,25 @@
-.data
+.include "render/shader.s"
+
+.bss
 
 row: .quad 0
 column: .quad 0
+
+.data
 
 .text
 
 clear_screen: .asciz "\033[2J"
 reset_cursor_position: .asciz "\033[H"
-
-wall: .ascii "█"
-gap:  .ascii " "
-newline:  .ascii "\n"
+set_cursor_left_template: .asciz "\033[%d;0H"
+go_down: .asciz "\033[1E"
+color_template: .asciz "\033[38;2;%.0f;%.0f;%.0fm█"
+# color_template: .asciz "[%.0f,%.0f,%.0f], "
+# color_template: .asciz "[%d,%d,%d], "
 
 # Maybe these could be defined as macros?
 rows: .quad 32
-columns: .quad 64
+columns: .quad 128
 
 angle_delta: .double 0.3 # in radians
 ray_length: .double 0.2
@@ -26,7 +31,7 @@ render_start:
 	mov $1, %rax 			# write
 	mov $0, %rdi			# stdout
 	mov $clear_screen, %rsi	# template
-	mov $7, %rdx
+	mov $4, %rdx
 	syscall
 
 	ret
@@ -39,12 +44,13 @@ render:
 	push %rbp
 	mov %rsp, %rbp
 
-	# Reset position
-	mov $1, %rax 						# write(
-	mov $0, %rdi						# 	stdout
-	mov $reset_cursor_position, %rsi	# 	template
-	mov $7, %rdx						# 	7 bytes
-	syscall								# )
+	call shader_setup
+
+	mov $clear_screen, %rdi
+	call printf
+	
+	mov $reset_cursor_position, %rdi
+	call printf
 
 	# Save callee-saved registers
 	push %r12
@@ -54,21 +60,25 @@ render:
 	# %r13 stores row
 
 	# Start at row 0
-	mov $0, %r12
+	mov $0, %r13
 	jmp render_loop
 
 # %r12 stores column, %r13 stores row
 render_loop:
 	# Start at column 0
-	mov $0, %r13
+	mov $0, %r12
 
 render_row_loop:
 	# Call shader for pixel
-	mov %r12, %rdi
-	mov %r13, %rsi
+	# mov $color_output, %rdi
+	mov %r13, %rdi
+	mov %r12, %rsi
 	call shader
 
-	# TODO: Draw pixel
+	# Draw pixel
+	movq $3, %rax
+	movq $color_template, %rdi
+	call printf
 
 	# Increment column and loop if not at the end
 	inc %r12
@@ -76,8 +86,8 @@ render_row_loop:
 	jl render_row_loop
 
 render_row_end:
-
-	# TODO: Print newline
+	mov $go_down, %rdi
+	call printf
 
 	# Increment row and loop if not at the end
 	inc %r13

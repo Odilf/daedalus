@@ -14,8 +14,8 @@ main:
 	call render_start
 
 game_loop:
+	call render
 	call input
-	# call render
 
 	jmp game_loop
 

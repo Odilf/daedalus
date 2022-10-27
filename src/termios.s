@@ -1,4 +1,4 @@
-.data
+.bss
 
 termios: .skip 148
 # struct termios {
