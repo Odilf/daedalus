@@ -109,7 +109,6 @@ shader_end:
 
 
 gradient_shader:
-# shader:
 	cvtsi2sd %rdi, %xmm0
 	cvtsi2sd columns, %xmm1
 	divsd %xmm1, %xmm0
@@ -121,7 +120,6 @@ gradient_shader:
 	mulsd max, %xmm1
 
 	movsd pos_y, %xmm2
-	# subsd pi, %xmm2
 	divsd tau, %xmm2
 	divsd tau, %xmm2
 	mulsd max, %xmm2

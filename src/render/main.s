@@ -55,10 +55,6 @@ render:
 	# Set background color
 	mov $terminal_background_color, %rdi
 	call printf
-
-	# Clear screen
-	# mov $clear_screen, %rdi
-	# call printf
 	
 	mov $reset_cursor_position, %rdi
 	call printf
@@ -87,12 +83,6 @@ render_row_loop:
 	mov %r12, %rsi
 	call shader
 
-	# TODO: just store in the buffer (?)
-	# mov $3, %rax
-	# mov $render_buffer, %rdi
-	# mov $color_template, %rsi
-	# call sprintf
-
 	# Draw pixel
 	movq $3, %rax
 	movq $color_template, %rdi
@@ -104,9 +94,7 @@ render_row_loop:
 	jl render_row_loop
 
 render_row_end:
-	# mov $render_buffer, %rdi
-	# mov $go_down, %rsi
-	# call sprintf
+	# Newline, but fancier lol
 	mov $go_down, %rdi
 	call printf
 
@@ -117,11 +105,10 @@ render_row_end:
 
 render_end:
 	# Flush buffer
-	# mov $render_buffer, %rdi
-	# call printf
-
 	mov $newline, %rdi
 	call printf
+	# mov $1, %rdi
+	# call fflush
 
 	# Restore callee-saved registers
 	pop %r13

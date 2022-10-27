@@ -1,4 +1,4 @@
-.include "map.s"
+.include "map/map.s"
 .include "termios.s"
 .include "render/main.s"
 .include "input.s"

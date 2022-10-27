@@ -1,13 +1,5 @@
 let
-	map = """
-
-	11111101
-	10111001
-	10000011
-	10110101
-	10001101
-	10100011
-	10111111"""
+	map = read("src/map/map.txt") 
 
 	output = ".text \n\n"
 	output *= "map:"

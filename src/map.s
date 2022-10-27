@@ -1,72 +1,64 @@
 .text 
 
-map:
-	# new row
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 0
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 0
-	.byte 0
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 0
-	.byte 0
-	.byte 0
-	.byte 0
-	.byte 1
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 1
-	.byte 1
-	.byte 0
-	.byte 1
-	.byte 0
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 0
-	.byte 0
-	.byte 1
-	.byte 1
-	.byte 0
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 1
-	.byte 0
-	.byte 0
-	.byte 0
-	.byte 1
-	.byte 1
-
-	# new row
-	.byte 1
-	.byte 0
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
+map:	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 48
+	.byte 48
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 48
+	.byte 48
+	.byte 48
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 48
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 48
+	.byte 48
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 10
+	.byte 49
+	.byte 48
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
+	.byte 49
