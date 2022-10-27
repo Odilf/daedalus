@@ -1,13 +1,10 @@
 .bss
-
 last_key: .quad 0
 
 .data
 
 pos_x: .double 3.0
 pos_y: .double 3.5
-delta_pos_x: .double 1.0
-delta_pos_y: .double 0.0
 angle: .double 0
 
 .text
@@ -61,37 +58,108 @@ input:
 
 
 move_forward:
-	movsd pos_y, %xmm4
-	addsd speed, %xmm4
+	# all of this mess is to make the "angle" centered at the screen, as the angle starts on the right and we need the player to be moving forward
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call sin
 
-	jmp check_collision
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm4
+	call check_collision
+
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call cos
+
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm3
+	call check_collision
+
+	jmp input_end
 
 move_back:
-	movsd pos_y, %xmm4
-	subsd speed, %xmm4
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call sin
 
-	jmp check_collision
+	mulsd speed, %xmm8
+	mulsd one_neg, %xmm8
+	addsd %xmm8, %xmm4
+	call check_collision
+
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call cos
+
+	mulsd speed, %xmm8
+	mulsd one_neg, %xmm8
+	addsd %xmm8, %xmm3
+	call check_collision
+
+	jmp input_end
 
 move_right:
-	movsd pos_x, %xmm3
-	addsd speed, %xmm3
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call sin
 
-	jmp check_collision
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm4
+	call check_collision
+
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call cos
+
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm3
+	call check_collision
+
+	jmp input_end
 
 move_left:
-	movsd pos_x, %xmm3
-	subsd speed, %xmm3
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call sin
 
-	jmp check_collision
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm4
+	call check_collision
+
+	movsd max_column_height, %xmm8
+	#divsd two, %xmm8
+	mulsd angle_delta, %xmm8
+	addsd angle, %xmm8
+	call cos
+
+	mulsd speed, %xmm8
+	addsd %xmm8, %xmm3
+	call check_collision
+
+	jmp input_end
 
 rotate_left:
 	movsd angle, %xmm5
-	addsd angle_speed, %xmm5
+	subsd angle_speed, %xmm5
 	jmp clamp_rotation
 
 rotate_right:
 	movsd angle, %xmm5
-	subsd angle_speed, %xmm5
+	addsd angle_speed, %xmm5
 	jmp clamp_rotation
 
 clamp_rotation:
@@ -115,6 +183,11 @@ clamp_end:
 	movsd %xmm5, angle
 	jmp input_end
 
+input_end:
+	mov %rbp, %rsp
+	pop %rbp
+
+	ret
 
 # Checks if pos_x and pos_y is inside a wall
 # Moves values into pos_x, pos_y if valid
@@ -169,16 +242,6 @@ check_collision_valid:
 	movsd %xmm3, pos_x
 	movsd %xmm4, pos_y
 
-
-
 check_collision_end:
-	jmp input_end
-
-input_end:
-	mov %rbp, %rsp
-	pop %rbp
-
 	ret
-
-
 

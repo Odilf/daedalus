@@ -10,7 +10,7 @@ column_length_cache: .skip 128
 column_height_scalar: .double 8000.0
 max_column_height: .double 32.0
 
-angle_delta: .double 0.01 # in radians
+angle_delta: .double 0.005 # in radians
 
 cache_column_lengths:
 	push %r15
