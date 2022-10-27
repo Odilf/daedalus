@@ -37,6 +37,8 @@ shader_setup:
 # - %rdi: row
 # - %rsi: column
 shader:
+	push %r8
+
 	cmp half_rows, %rdi
 	jg lower_half
 	jmp upper_half
@@ -99,6 +101,8 @@ shader_end:
 	minsd max, %xmm0
 	minsd max, %xmm1
 	minsd max, %xmm2
+
+	pop %r8
 
 	ret
 	

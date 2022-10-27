@@ -14,7 +14,7 @@ reset_cursor_position: .asciz "\033[H"
 set_cursor_position_template: .asciz "\033[%d;%dH"
 
 go_down: .asciz "\033[1E"
-color_template: .asciz "\033[48;2;%.0f;%.0f;%.0fm "
+color_template: .asciz "\033[38;2;%.0f;%.0f;%.0fm█"
 
 terminal_background_color: .asciz "\033[48;2;64;0;5m"
 
@@ -46,6 +46,7 @@ render_start:
 # Then, it takes the values of %xmm3, %xmm4 and %xmm5 and draws it in the screen
 render:
 	# Prologue for render
+	push %rbp
 	push %rbp
 	mov %rsp, %rbp
 
@@ -135,6 +136,7 @@ render_end:
 
 	# Epilogue for render
 	mov %rbp, %rsp
+	pop %rbp
 	pop %rbp
 
 	ret
