@@ -12,8 +12,8 @@
 - `%xmm6`: unused
 - `%xmm7`: unused
 - `%xmm8`: Input for `sin` and `cos`
-- `%xmm9`: Modified by `sin` and `cos` and shader
-- `%xmm10`: Modified by `sin` and `cos` and shader
+- `%xmm9`: Modified by `sin` and `cos` and shader and raycast
+- `%xmm10`: Modified by `sin` and `cos` and shader and raycast
 - `%xmm11`: Modified by `sin` and `cos` and shader
 - `%xmm12`: unused
 - `%xmm13`: unused

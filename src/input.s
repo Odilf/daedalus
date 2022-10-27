@@ -63,25 +63,25 @@ input:
 
 
 move_forward:
-	movsd delta_pos_y, %xmm4
+	movsd pos_y, %xmm4
 	addsd speed, %xmm4
 
 	jmp check_collision
 
 move_back:
-	movsd delta_pos_y, %xmm4
+	movsd pos_y, %xmm4
 	subsd speed, %xmm4
 
 	jmp check_collision
 
 move_right:
-	movsd delta_pos_x, %xmm3
+	movsd pos_x, %xmm3
 	addsd speed, %xmm3
 
 	jmp check_collision
 
 move_left:
-	movsd delta_pos_x, %xmm3
+	movsd pos_x, %xmm3
 	subsd speed, %xmm3
 
 	jmp check_collision
@@ -171,9 +171,6 @@ check_collision_inside:
 	jmp check_collision_end
 
 check_collision_valid:
-	movsd delta_pos_x, %xmm3
-	movsd delta_pos_Y, %xmm4
-
 	movsd %xmm3, pos_x
 	movsd %xmm4, pos_y
 
