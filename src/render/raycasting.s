@@ -34,8 +34,10 @@ raycast_size: .double 0.1
 # return rax; 
 
 raycast:
-    push %rbp
-    mov %rsp, %rbp
+	mov $16, %rax
+	ret
+    # push %rbp
+    # mov %rsp, %rbp
 	
 	# Save calle-saved register
     push %r15
@@ -43,15 +45,15 @@ raycast:
 	# %r15 holds the ray length
     mov $0, %r15
 
-    # Get sin and multiply by raycast_size to get dx
+    # Get cos and multiply by raycast_size to get dx
     movsd %xmm8, ray_angle
-    call sin
+    call cos
     mulsd raycast_size, %xmm8
     movsd %xmm8, delta_ray_x
-
-    # Get cos and multiply by raycast_size to get dx
+ 
+    # Get sin and multiply by raycast_size to get dx
     movsd ray_angle, %xmm8
-    call cos
+    call sin
     mulsd raycast_size, %xmm8
     movsd %xmm8, delta_ray_y
 
@@ -59,10 +61,8 @@ raycast:
     movsd %xmm3, %xmm9
     movsd %xmm4, %xmm10
 
-    # loop to add until it hits a wall
 raycast_check:
 	# %r15 holds ray length
-    # addsd 
     inc %r15
 
 	# Move vector
@@ -99,7 +99,8 @@ collision_ray:
 	add %rax, %rdi
 
 	# Get value of position to %rax
-	mov map(%rdi), %rax
+	movq $0, %rax
+	# movb map(%rdi), %al
 
     movq %rbp, %rsp
     pop %rbp
