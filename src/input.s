@@ -165,7 +165,6 @@ check_collision_valid:
 check_collision_end:
 	jmp input_end
 
-
 input_end:
 	mov %rbp, %rsp
 	pop %rbp

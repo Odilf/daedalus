@@ -14,65 +14,68 @@ min_column_height: .quad 8
 half_min_column_height: .quad 4
 
 background_color:
-	.double 255.0
+	.double 90.0
+	.double 50.0
+	.double 50.0
+
+wall_color:
+	.double 102.0
 	.double 127.0
-	.double 255.0
+	.double 102.0
 
 shader_setup:
-	mov columns, %rdi
-	shr $1, %rdi
-	mov %rdi, half_columns
-
-	mov rows, %rdi
-	shr $1, %rdi
-	mov %rdi, half_rows
+	call cache_column_lengths
 
 	ret
 
-# Shader sets the output rgb on registers %xmm3-5
+# Shader sets the output rgb on registers %xmm0-2
 
 # Arguments:
 # - %rdi: row
 # - %rsi: column
 shader:
-	cmp half_rows, %rdi
-	jg lower_half
-	jmp upper_half
+	# Calculate if we have to draw background or column
 
-upper_half:
-	mov half_rows, %rdx
-	sub half_min_column_height, %rdx
-	cvtsi2sd %rdi, %xmm9
-	cvtsi2sd %rdx, %xmm10
-	divsd %xmm10, %xmm9
+	# Move column height to %rdx
+	# mov $0, %rdx
+	# mov column_length_cache(%rdx, %rsi, 8), %rdx
 
-	mulsd one_neg, %xmm9
-	addsd one, %xmm9
+	# (Hardcoded for now)
+	mov %rsi, %rdx 
+	shl $59, %rdx 
+	shr $59, %rdx 
 
-	# Interpolate color
-	mov $background_color, %rcx
-	movsd %xmm9, %xmm0
-	movsd %xmm9, %xmm1
-	movsd %xmm9, %xmm2
+	# %rdx has the column height
 
-	mulsd   (%rcx), %xmm0
-	mulsd  8(%rcx), %xmm1
-	mulsd 16(%rcx), %xmm2
+	# Skip drawing the column if it's too small
+	cmp min_column_height, %rdx
+	jle draw_background
+	
+	# Check if we're inside of a column
+	mov %rdx, %r8
+	mov rows, %rcx
+	sub %r8, %rcx			# %rcx = rows - column_height
+	shr $1, %rcx			# %rcx = (rows - column_height) / 2
 
-	jmp shader_end
+	cmp %rcx, %rdi # If on upper half
+	jl background_upper_half
 
-lower_half:
-	mov half_rows, %rdx
-	sub half_min_column_height, %rdx
-	sub half_rows, %rdi
-	sub half_min_column_height, %rdi
+	add %rdx, %rcx			# %rcx = (rows - column_height) / 2 + column_height 
+							#	   = (rows + column_height) / 2
 
-	cvtsi2sd %rdi, %xmm9
-	cvtsi2sd %rdx, %xmm10
+	cmp %rcx, %rdi
+	jg background_lower_half
+
+
+draw_column:
+	# %rdx has the column size
+	sub min_column_height, %rdx
+	cvtsi2sd %rdx, %xmm9
+	cvtsi2sd rows, %xmm10
 	divsd %xmm10, %xmm9
 	
 	# Interpolate color
-	mov $background_color, %rcx
+	mov $wall_color, %rcx
 	movsd %xmm9, %xmm0
 	movsd %xmm9, %xmm1
 	movsd %xmm9, %xmm2
@@ -82,6 +85,57 @@ lower_half:
 	mulsd 16(%rcx), %xmm2
 
 	jmp shader_end
+
+
+draw_background:
+	cmp half_rows, %rdi
+	jg background_lower_half
+	jmp background_upper_half
+
+	background_upper_half:
+		mov half_rows, %rdx
+		sub half_min_column_height, %rdx
+		cvtsi2sd %rdi, %xmm9
+		cvtsi2sd %rdx, %xmm10
+		divsd %xmm10, %xmm9
+
+		mulsd one_neg, %xmm9
+		addsd one, %xmm9
+
+		# Interpolate color
+		mov $background_color, %rcx
+		movsd %xmm9, %xmm0
+		movsd %xmm9, %xmm1
+		movsd %xmm9, %xmm2
+
+		mulsd   (%rcx), %xmm0
+		mulsd  8(%rcx), %xmm1
+		mulsd 16(%rcx), %xmm2
+
+		jmp shader_end
+
+	background_lower_half:
+		mov half_rows, %rdx
+		sub half_min_column_height, %rdx
+		sub half_rows, %rdi
+		sub half_min_column_height, %rdi
+
+		cvtsi2sd %rdi, %xmm9
+		cvtsi2sd %rdx, %xmm10
+		divsd %xmm10, %xmm9
+		
+		# Interpolate color
+		mov $background_color, %rcx
+		movsd %xmm9, %xmm0
+		movsd %xmm9, %xmm1
+		movsd %xmm9, %xmm2
+
+		mulsd   (%rcx), %xmm0
+		mulsd  8(%rcx), %xmm1
+		mulsd 16(%rcx), %xmm2
+
+		jmp shader_end
+
 
 
 

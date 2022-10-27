@@ -17,6 +17,7 @@ cache_column_loop:
 	# Convert raycast length to column size
 
 	# Store the resulting column size in column_length_cache(%rdi) (or similar)
+	# NOTE: We should also clamp the values if they're too big!
 
 	# Loop
 	inc %rdi
