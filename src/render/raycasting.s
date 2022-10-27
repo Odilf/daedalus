@@ -97,8 +97,7 @@ collision_ray:
 	add %rax, %rdi
 
 	# Get value of position to %rax
-	movq $0, %rax
-	# movb map(%rdi), %al
+	movb map(%rdi), %al
 
     movq %rbp, %rsp
     pop %rbp

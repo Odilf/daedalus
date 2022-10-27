@@ -13,8 +13,10 @@ max_column_height: .double 20.0
 angle_delta: .double 0.3 # in radians
 
 cache_column_lengths:
+	push %r15
 	movsd angle, %xmm8
-	mov $0, %rdi
+
+	mov $0, %r15
 
 cache_column_loop:
 	addsd angle_delta, %xmm8 # Increment angle
@@ -30,14 +32,15 @@ cache_column_loop:
 	cvttss2si %xmm9, %rsi
 
 	# Store the resulting column size in column_length_cache(%rdi) (or similar)
-	movb %sil, column_length_cache(%rdi)
-	# movb $16, column_length_cache(%rdi)
+	movb %sil, column_length_cache(%r15)
 
 	# NOTE: We should also clamp the values if they're too big!
 
 	# Loop
-	inc %rdi
-	cmp columns, %rdi
+	inc %r15
+	cmp columns, %r15
 	jl cache_column_loop
+
+	pop %r15
 
 	ret
