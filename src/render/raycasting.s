@@ -7,7 +7,7 @@ delta_ray_x: .double 0.0
 delta_ray_y: .double 0.0
 
 .text
-
+render_distance: .quad 50
 raycast_size: .double 0.01
 
 # Will use %xmm8 to get angle in which it'll get distance for wall
@@ -70,10 +70,14 @@ raycast_check:
 	# Check collision 
     call collision_ray
 
+    cmp render_distance, %r15
+    je above_render_distance 
+
 	# Loop if not collided
     cmp $0, %rax
     je raycast_check
 
+exit_raycast_check:
     # Move ray length to %rax (output)
     mov %r15, %rax
 
@@ -84,6 +88,11 @@ raycast_check:
     pop %rbp
     ret
 
+above_render_distance:
+    mov $255, %r15
+    jmp exit_raycast_check
+
+# function for checking if ray is colliding wall/bounds
 collision_ray:
     push %rbp
     mov %rsp, %rbp
@@ -91,6 +100,15 @@ collision_ray:
     # Convert scalar double to quad integer
 	cvttsd2si %xmm9, %rdi
 	cvttsd2si %xmm10, %rax
+    
+    mov map_size, %rbx
+    inc %rbx
+
+    # jump if it is above map size + 1, meaning if it is out of bounds
+    cmp %rdi, %rbx
+    je set_out_of_bounds
+    cmp %rax, %rbx
+    je set_out_of_bounds
 
 	# multiply y with map_size to figure out row positionm, and add by x to figure out column position
 	mulq map_size
@@ -99,6 +117,11 @@ collision_ray:
 	# Get value of position to %rax
 	movb map(%rdi), %al
 
+exit_collision_ray:
     movq %rbp, %rsp
     pop %rbp
     ret
+
+set_out_of_bounds:
+    mov $1, %rax
+    jmp exit_collision_ray
