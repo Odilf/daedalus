@@ -152,12 +152,12 @@ move_left:
 
 	jmp input_end
 
-rotate_left:
+rotate_right:
 	movsd angle, %xmm5
 	subsd angle_speed, %xmm5
 	jmp clamp_rotation
 
-rotate_right:
+rotate_left:
 	movsd angle, %xmm5
 	addsd angle_speed, %xmm5
 	jmp clamp_rotation
