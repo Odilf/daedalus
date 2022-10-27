@@ -14,13 +14,13 @@ min_column_height: .quad 8
 half_min_column_height: .quad 4
 
 background_color:
-	.double 90.0
+	.double 80.0
 	.double 50.0
 	.double 50.0
 
 wall_color:
 	.double 102.0
-	.double 127.0
+	.double 110.0
 	.double 102.0
 
 shader_setup:
