@@ -14,14 +14,14 @@ min_column_height: .quad 8
 half_min_column_height: .quad 4
 
 background_color:
-	.double 80.0
-	.double 50.0
+	.double 70.0
+	.double 60.0
 	.double 50.0
 
 wall_color:
-	.double 102.0
-	.double 110.0
-	.double 102.0
+	.double 204.0
+	.double 214.0
+	.double 202.0
 
 shader_setup:
 	call cache_column_lengths
@@ -45,10 +45,15 @@ shader:
 	# Skip drawing the column if it's too small
 	cmp min_column_height, %rdx
 	jle draw_background
+
+
+	# cmp $33, %rdx
+	# jge draw_white
 	
 	# Check if we're inside of a column
 	mov %rdx, %r8
 	mov rows, %rcx
+	# addq $4, %rcx
 	sub %r8, %rcx			# %rcx = rows - column_height
 	shr $1, %rcx			# %rcx = (rows - column_height) / 2
 
