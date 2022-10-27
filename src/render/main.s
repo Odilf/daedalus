@@ -17,9 +17,6 @@ newline: .asciz "\n"
 rows: .quad 32
 columns: .quad 128
 
-angle_delta: .double 0.3 # in radians
-ray_length: .double 0.2
-
 # Setup for rendering
 # Right now, screen is only cleared at the start. Don't know if that's a bad idea
 render_start: 
