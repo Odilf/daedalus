@@ -7,7 +7,7 @@ delta_ray_x: .double 0.0
 delta_ray_y: .double 0.0
 
 .text
-render_distance: .quad 50
+render_distance: .quad 4096
 raycast_size: .double 0.01
 
 # Will use %xmm8 to get angle in which it'll get distance for wall
@@ -89,7 +89,7 @@ exit_raycast_check:
     ret
 
 above_render_distance:
-    mov $255, %r15
+    mov render_distance, %r15
     jmp exit_raycast_check
 
 # function for checking if ray is colliding wall/bounds

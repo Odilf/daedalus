@@ -38,7 +38,7 @@ shader:
 
 	# Move column height to %rdx
 	mov $0, %rdx
-	movb column_length_cache(%rdx), %dl
+	movb column_length_cache(%rsi), %dl
 
 	# %rdx has the column height
 
