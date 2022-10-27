@@ -5,15 +5,18 @@
 row: .quad 0
 column: .quad 0
 
-.data
+render_buffer: .skip 4096
 
 .text
 
 clear_screen: .asciz "\033[2J"
 reset_cursor_position: .asciz "\033[H"
-set_cursor_left_template: .asciz "\033[%d;0H"
+set_cursor_position_template: .asciz "\033[%d;%dH"
+
 go_down: .asciz "\033[1E"
-color_template: .asciz "\033[38;2;%.0f;%.0f;%.0fm█"
+color_template: .asciz "\033[48;2;%.0f;%.0f;%.0fm "
+
+terminal_background_color: .asciz "\033[48;2;64;0;5m"
 # color_template: .asciz "[%.0f,%.0f,%.0f], "
 # color_template: .asciz "[%d,%d,%d], "
 
@@ -46,6 +49,11 @@ render:
 
 	call shader_setup
 
+	# Set background color
+	mov $terminal_background_color, %rdi
+	call printf
+
+	# Clear screen
 	mov $clear_screen, %rdi
 	call printf
 	
@@ -58,10 +66,12 @@ render:
 
 	# %r12 stores column
 	# %r13 stores row
+	movq $0, render_buffer
 
 	# Start at row 0
 	mov $0, %r13
 	jmp render_loop
+
 
 # %r12 stores column, %r13 stores row
 render_loop:
@@ -70,10 +80,22 @@ render_loop:
 
 render_row_loop:
 	# Call shader for pixel
-	# mov $color_output, %rdi
 	mov %r13, %rdi
 	mov %r12, %rsi
 	call shader
+
+	mov $set_cursor_position_template, %rdi
+	mov %r13, %rsi
+	mov %r12, %rdx
+	call printf
+
+	# TODO: just store in the buffer (?)
+	# mov $3, %rax
+	# mov $render_buffer, %rdi
+	# mov $color_template, %rsi
+	# call sprintf
+
+
 
 	# Draw pixel
 	movq $3, %rax
@@ -86,8 +108,11 @@ render_row_loop:
 	jl render_row_loop
 
 render_row_end:
-	mov $go_down, %rdi
-	call printf
+	# mov $render_buffer, %rdi
+	# mov $go_down, %rsi
+	# call sprintf
+	# mov $go_down, %rdi
+	# call printf
 
 	# Increment row and loop if not at the end
 	inc %r13
@@ -95,6 +120,10 @@ render_row_end:
 	jl render_loop
 
 render_end:
+	# Flush buffer
+	# mov $render_buffer, %rdi
+	# call printf
+
 	# Restore callee-saved registers
 	pop %r13
 	pop %r12

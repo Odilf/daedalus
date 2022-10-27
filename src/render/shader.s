@@ -11,6 +11,15 @@ half: .double 127.5
 min_column_height: .quad 8
 half_min_column_height: .quad 4
 
+# background_color:
+# 	.double 162.0
+# 	.double 103.0
+# 	.double 105.0
+background_color:
+	.double 255.0
+	.double 127.0
+	.double 255.0
+
 shader_setup:
 	mov columns, %rdi
 	shr $1, %rdi
@@ -42,10 +51,15 @@ upper_half:
 	mulsd one_neg, %xmm9
 	addsd one, %xmm9
 
-	mulsd max, %xmm9
+	# Interpolate color
+	mov $background_color, %rcx
 	movsd %xmm9, %xmm0
-	movsd zero, %xmm1
-	movsd zero, %xmm2
+	movsd %xmm9, %xmm1
+	movsd %xmm9, %xmm2
+
+	mulsd   (%rcx), %xmm0
+	mulsd  8(%rcx), %xmm1
+	mulsd 16(%rcx), %xmm2
 
 	jmp shader_end
 
@@ -59,10 +73,15 @@ lower_half:
 	cvtsi2sd %rdx, %xmm10
 	divsd %xmm10, %xmm9
 	
-	mulsd max, %xmm9
+	# Interpolate color
+	mov $background_color, %rcx
 	movsd %xmm9, %xmm0
-	movsd zero, %xmm1
-	movsd zero, %xmm2
+	movsd %xmm9, %xmm1
+	movsd %xmm9, %xmm2
+
+	mulsd   (%rcx), %xmm0
+	mulsd  8(%rcx), %xmm1
+	mulsd 16(%rcx), %xmm2
 
 	jmp shader_end
 
@@ -90,6 +109,7 @@ shader_end:
 
 
 gradient_shader:
+# shader:
 	cvtsi2sd %rdi, %xmm0
 	cvtsi2sd columns, %xmm1
 	divsd %xmm1, %xmm0
