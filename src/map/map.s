@@ -1,6 +1,6 @@
 .text 
 
-map_size: 8 
+map_size: .quad 8 
 
 map: 
 	.byte 1

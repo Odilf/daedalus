@@ -130,16 +130,16 @@ check_collision:
 
 	# Boundchecks
 
-	# x boundcheck (0 <= x < map_x)
+	# x boundcheck (0 <= x < map_size)
 	cmp $0, %rdi
 	jge check_collision_inside
-	cmp map_x, %rdi
+	cmp map_size, %rdi
 	jl check_collision_inside
 
-	# y boundcheck (0 <= y < map_y)
+	# y boundcheck (0 <= y < map_size)
 	cmp $0, %rsi
 	jge check_collision_inside
-	cmp map_y, %rsi
+	cmp map_size, %rsi
 	jl check_collision_inside
 
 	# If outside box, allow

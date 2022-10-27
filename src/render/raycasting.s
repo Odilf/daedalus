@@ -1,7 +1,8 @@
-.include "../map.s"
+.include "../map/map.s"
 
 .text
-RAYCAST_SIZE: .double 0.001
+
+raycast_size: .double 0.001
 
 raycast:
     push %rbp

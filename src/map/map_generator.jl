@@ -3,7 +3,7 @@ let
 
 	output = ".text \n\n"
 	map_size = split(map, '\n')[1] |> length
-	output *= "map_size: $map_size \n\n"
+	output *= "map_size: .quad $map_size \n\n"
 	output *= "map: \n"
 
 	for i in map
