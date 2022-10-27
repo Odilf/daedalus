@@ -1,11 +1,15 @@
+.include "collision.s"
+
 .bss
 
 last_key: .quad 0
 
 .data
 
-pos_x: .double 0.0
+pos_x: .double 1.0
 pos_y: .double 0.0
+delta_pos_x: .double 1.0
+delta_pos_y: .double 0.0
 angle: .double 0
 
 .text
@@ -59,25 +63,25 @@ input:
 
 
 move_forward:
-	movsd pos_y, %xmm4
+	movsd delta_pos_y, %xmm4
 	addsd speed, %xmm4
 
 	jmp check_collision
 
 move_back:
-	movsd pos_y, %xmm4
+	movsd delta_pos_y, %xmm4
 	subsd speed, %xmm4
 
 	jmp check_collision
 
 move_right:
-	movsd pos_x, %xmm3
+	movsd delta_pos_x, %xmm3
 	addsd speed, %xmm3
 
 	jmp check_collision
 
 move_left:
-	movsd pos_x, %xmm3
+	movsd delta_pos_x, %xmm3
 	subsd speed, %xmm3
 
 	jmp check_collision
@@ -147,11 +151,19 @@ check_collision:
 
 check_collision_inside:
 	# TODO: Implement collision properly
-	jmp check_collision_valid
+	# jmp check_collision_valid
+
+	# Convert scalar double to quad integer
+	cvttsd2si %xmm3, %rdi
+	cvttsd2si %xmm4, %rax
+
+	# multiply y with map_size to figure out row positionm, and add by x to figure out column position
+	mul map_size 
+	add %rax, %rdi
 
 	# Store 0 in %rax if it's valid
 	mov map(%rdi), %rax
-	and %rsi, %rax
+	# and %rsi, %rax
 
 	cmp $0, %rax
 	je check_collision_valid
@@ -159,8 +171,13 @@ check_collision_inside:
 	jmp check_collision_end
 
 check_collision_valid:
+	movsd delta_pos_x, %xmm3
+	movsd delta_pos_Y, %xmm4
+
 	movsd %xmm3, pos_x
 	movsd %xmm4, pos_y
+
+
 
 check_collision_end:
 	jmp input_end
@@ -171,3 +188,6 @@ input_end:
 	pop %rbp
 
 	ret
+
+
+
