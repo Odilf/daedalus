@@ -10,12 +10,18 @@ column_length_cache: .skip 128
 column_height_scalar: .double 8000.0
 max_column_height: .double 32.0
 
-angle_delta: .double 0.005 # in radians
+angle_delta: .double 0.008 # in radians
 
 cache_column_lengths:
 	push %r15
 
+	# Caclulate `angle - (angle_delta * columns) / 2`
 	movsd angle, %xmm12
+	cvtsi2sd columns, %xmm9
+	mulsd angle_delta, %xmm9
+	divsd two, %xmm9
+	subsd %xmm9, %xmm12
+
 	mov $0, %r15
 
 cache_column_loop:

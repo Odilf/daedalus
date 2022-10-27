@@ -9,7 +9,7 @@ angle: .double 0
 
 .text
 
-speed: .double  0.5
+speed: .double  0.3
 angle_speed: .double 0.1
 
 # GENERAL REMARKS
@@ -58,106 +58,112 @@ input:
 
 
 move_forward:
-	# all of this mess is to make the "angle" centered at the screen, as the angle starts on the right and we need the player to be moving forward
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
-	call sin
-
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm4
-	call check_collision
-
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
+	# Calculate delta x
+	movsd angle, %xmm8
 	call cos
+	movsd %xmm8, %xmm12
+	mulsd speed, %xmm12
 
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm3
+	# Calculate delta y
+	movsd angle, %xmm8
+	call sin
+	movsd %xmm8, %xmm13
+	mulsd speed, %xmm13
+
+	# Add the deltas
+	movsd pos_x, %xmm3
+	addsd %xmm12, %xmm3
+
+	movsd pos_y, %xmm4
+	addsd %xmm13, %xmm4
+
 	call check_collision
 
 	jmp input_end
 
 move_back:
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
-	call sin
-
-	mulsd speed, %xmm8
-	mulsd one_neg, %xmm8
-	addsd %xmm8, %xmm4
-	call check_collision
-
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
+	# Calculate delta x
+	movsd angle, %xmm8
 	call cos
+	movsd %xmm8, %xmm12
+	mulsd speed, %xmm12
 
-	mulsd speed, %xmm8
-	mulsd one_neg, %xmm8
-	addsd %xmm8, %xmm3
+	# Calculate delta y
+	movsd angle, %xmm8
+	call sin
+	movsd %xmm8, %xmm13
+	mulsd speed, %xmm13
+
+	# Subtract the deltas
+	movsd pos_x, %xmm3
+	subsd %xmm12, %xmm3
+
+	movsd pos_y, %xmm4
+	subsd %xmm13, %xmm4
+
 	call check_collision
 
 	jmp input_end
 
+
 move_right:
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
-	call sin
-
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm4
-	call check_collision
-
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
+	# Calculate delta x
+	movsd angle, %xmm8
 	call cos
+	movsd %xmm8, %xmm12
+	mulsd speed, %xmm12
 
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm3
+	# Calculate delta y
+	movsd angle, %xmm8
+	call sin
+	movsd %xmm8, %xmm13
+	mulsd speed, %xmm13
+
+	# do pos + (-delta_y, delta_x)
+	movsd pos_x, %xmm3
+	subsd %xmm13, %xmm3
+
+	movsd pos_y, %xmm4
+	addsd %xmm12, %xmm4
+
 	call check_collision
+
+	jmp input_end
 
 	jmp input_end
 
 move_left:
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
-	call sin
-
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm4
-	call check_collision
-
-	movsd max_column_height, %xmm8
-	#divsd two, %xmm8
-	mulsd angle_delta, %xmm8
-	addsd angle, %xmm8
+	# Calculate delta x
+	movsd angle, %xmm8
 	call cos
+	movsd %xmm8, %xmm12
+	mulsd speed, %xmm12
 
-	mulsd speed, %xmm8
-	addsd %xmm8, %xmm3
+	# Calculate delta y
+	movsd angle, %xmm8
+	call sin
+	movsd %xmm8, %xmm13
+	mulsd speed, %xmm13
+
+	# do pos + delta_y, -delta_x)
+	movsd pos_x, %xmm3
+	addsd %xmm13, %xmm3
+
+	movsd pos_y, %xmm4
+	subsd %xmm12, %xmm4
+
 	call check_collision
 
 	jmp input_end
 
-rotate_right:
+	jmp input_end
+
+rotate_left:
 	movsd angle, %xmm5
 	subsd angle_speed, %xmm5
 	jmp clamp_rotation
 
-rotate_left:
+rotate_right:
 	movsd angle, %xmm5
 	addsd angle_speed, %xmm5
 	jmp clamp_rotation
@@ -221,14 +227,11 @@ check_collision:
 	jmp check_collision_valid
 
 check_collision_inside:
-	# TODO: Implement collision properly
-	# jmp check_collision_valid
-
 	# Convert scalar double to quad integer
 	cvttsd2si %xmm3, %rdi
 	cvttsd2si %xmm4, %rax
 
-	# multiply y with map_size to figure out row positionm, and add by x to figure out column position
+	# multiply y with map_size to figure out row position, and add x to figure out column position
 	mulq map_size
 	add %rax, %rdi
 
