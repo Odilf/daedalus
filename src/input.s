@@ -1,11 +1,7 @@
-.include "collision.s"
-
 .bss
-
 last_key: .quad 0
 
 .data
-
 pos_x: .double 1.0
 pos_y: .double 0.0
 delta_pos_x: .double 1.0
@@ -158,11 +154,12 @@ check_collision_inside:
 	cvttsd2si %xmm4, %rax
 
 	# multiply y with map_size to figure out row positionm, and add by x to figure out column position
-	mul map_size 
+	mulq map_size
 	add %rax, %rdi
 
 	# Store 0 in %rax if it's valid
-	mov map(%rdi), %rax
+	mov $map, %rsi
+	mov (%rsi, %rdi, 1), %rax
 	# and %rsi, %rax
 
 	cmp $0, %rax
