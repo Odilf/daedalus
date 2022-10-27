@@ -57,8 +57,8 @@ render:
 	call printf
 
 	# Clear screen
-	mov $clear_screen, %rdi
-	call printf
+	# mov $clear_screen, %rdi
+	# call printf
 	
 	mov $reset_cursor_position, %rdi
 	call printf
@@ -87,18 +87,11 @@ render_row_loop:
 	mov %r12, %rsi
 	call shader
 
-	mov $set_cursor_position_template, %rdi
-	mov %r13, %rsi
-	mov %r12, %rdx
-	call printf
-
 	# TODO: just store in the buffer (?)
 	# mov $3, %rax
 	# mov $render_buffer, %rdi
 	# mov $color_template, %rsi
 	# call sprintf
-
-
 
 	# Draw pixel
 	movq $3, %rax
@@ -114,8 +107,8 @@ render_row_end:
 	# mov $render_buffer, %rdi
 	# mov $go_down, %rsi
 	# call sprintf
-	# mov $go_down, %rdi
-	# call printf
+	mov $go_down, %rdi
+	call printf
 
 	# Increment row and loop if not at the end
 	inc %r13

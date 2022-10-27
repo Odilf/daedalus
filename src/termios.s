@@ -20,7 +20,9 @@ set_termios_non_canonical:
 	mov $termios, %rdx	# pointer to struct
 	syscall
 
-	# Set flag
+	# Values got from [here](https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/termbits.h)
+
+	# Set ICANON flag 
 	mov $0x00000002, %rdi	# ICANON flag
 	mov $termios, %rsi		# Get termios address
 	add $12, %rsi			# Offset to get `c_lflag`
@@ -28,6 +30,16 @@ set_termios_non_canonical:
 
 	not %rdi				# not ICANON
 	and %rdx, %rdi			# c_lflag and (not ICANON)
+	mov %rdi, (%rsi)		# Move it back
+
+	# Set ECHO flag
+	mov $0x00000008, %rdi	# ECHO flag
+	mov $termios, %rsi		# Get termios address
+	add $12, %rsi			# Offset to get `c_lflag`
+	mov (%rsi), %rdx		# Move c_lflag to rdx
+
+	not %rdi				# not ECHO
+	and %rdx, %rdi			# c_lflag and (not ECHO)
 	mov %rdi, (%rsi)		# Move it back
 
 	# Notify of change
