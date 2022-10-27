@@ -1,6 +1,9 @@
 .text 
 
-map:	.byte 49
+# map size: 8x8
+
+map:	
+	.byte 49
 	.byte 49
 	.byte 49
 	.byte 49
