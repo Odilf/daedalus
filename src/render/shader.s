@@ -64,6 +64,8 @@ shader:
 	cmp %rcx, %rdi
 	jg background_lower_half
 
+	jmp draw_column
+
 draw_white:
 	movsd max, %xmm0
 	movsd max, %xmm1

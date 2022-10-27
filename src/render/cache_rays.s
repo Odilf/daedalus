@@ -7,10 +7,10 @@ column_length_cache: .skip 128
 
 .text
 
-column_height_scalar: .double 200.0
-max_column_height: .double 33.0
+column_height_scalar: .double 8000.0
+max_column_height: .double 32.0
 
-angle_delta: .double 0.01 # in radians
+angle_delta: .double 0.1 # in radians
 
 cache_column_lengths:
 	push %r15
@@ -25,16 +25,19 @@ cache_column_loop:
 	call raycast # Output is stored on %rax
 
 caca:
+	# mov $401, %rax
 
 	# Convert raycast length to column size
-	cvtsi2ss %rax, %xmm9
-	rcpss %xmm9, %xmm9
-	mulss column_height_scalar, %xmm9	
+	cvtsi2sd %rax, %xmm9
+	movsd one, %xmm10
+	divsd %xmm9, %xmm10
+	mulsd column_height_scalar, %xmm10
 	maxss max_column_height, %xmm9		# Clamp to 32
-	# movsd max_column_height, %xmm9
-	cvttss2si %xmm9, %rsi
 
-	# movq $200, %rsi
+	# movsd idk, %xmm10
+	cvttsd2si %xmm10, %rsi
+
+	# mov $20, %rsi
 
 	# Store the resulting column size in column_length_cache(%rdi) (or similar)
 	movb %sil, column_length_cache(%r15)
