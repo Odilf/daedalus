@@ -1,13 +1,72 @@
-.text
+.text 
 
 map:
-	.byte 0b11111101
-	.byte 0b10111001
-	.byte 0b10000011
-	.byte 0b10110101
-	.byte 0b10001101
-	.byte 0b10100011
-	.byte 0b10111111
+	# new row
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 0
+	.byte 1
 
-map_x: .quad 8
-map_y: .quad 8
+	# new row
+	.byte 1
+	.byte 0
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 0
+	.byte 0
+	.byte 1
+
+	# new row
+	.byte 1
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 1
+	.byte 1
+
+	# new row
+	.byte 1
+	.byte 0
+	.byte 1
+	.byte 1
+	.byte 0
+	.byte 1
+	.byte 0
+	.byte 1
+
+	# new row
+	.byte 1
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 1
+	.byte 1
+	.byte 0
+	.byte 1
+
+	# new row
+	.byte 1
+	.byte 0
+	.byte 1
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 1
+	.byte 1
+
+	# new row
+	.byte 1
+	.byte 0
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
+	.byte 1
