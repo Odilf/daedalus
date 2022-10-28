@@ -86,7 +86,7 @@ raycast_check:
 
 shit:
 	mov $game_map, %rdx
-	mov $1, %rdi
+	mov $69, %rdi
 	call exit
 	# je exit_raycast_check
 
