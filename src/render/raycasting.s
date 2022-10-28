@@ -71,6 +71,7 @@ raycast_check:
 	# Check collision 
     call collision_ray
 
+	# Clamp to render distance
 	cmp render_distance, %r15
     jge above_render_distance 
 
@@ -78,19 +79,7 @@ raycast_check:
     cmp $0, %rax
 	je raycast_check
 
-	# cmp $1, %rax
-	# je exit_raycast_check
-
-	# jmp shit
 	jmp exit_raycast_check
-
-shit:
-	# mov $game_map, %rdx
-	mov $69, %rdi
-	call exit
-	# je exit_raycast_check
-
-    # jmp raycast_check
 
 exit_raycast_check:
     # Move ray length to %rax (output)
@@ -115,9 +104,6 @@ collision_ray:
     # Convert scalar double to quad integer
 	cvttsd2si %xmm9, %rcx
 	cvttsd2si %xmm10, %rax
-    
-    # mov map_size, %rbx
-    # inc %rbx
 
     # jump if it is above map size + 1, meaning if it is out of bounds
 	cmp $0, %rcx
@@ -136,21 +122,8 @@ collision_ray:
 	mulq map_size
 	add %rax, %rcx
 
-	# mov $map, %rdx
-	# add %rdx, %rcx
-	# add $game_map, %rcx
-	# Get value of position to %rax
 	movq $0, %rax
 	movb game_map(%rcx), %al
-
-	# Debug
-	cmp $0, %rax
-	je exit_collision_ray
-
-	cmp $1, %rax
-	je exit_collision_ray
-
-	jmp shit
 
 exit_collision_ray:
     movq %rbp, %rsp
