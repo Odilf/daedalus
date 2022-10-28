@@ -11,7 +11,7 @@ angle: .double 1.57
 
 .text
 
-speed: .double  0.3
+speed: .double  0.31415
 angle_speed: .double 0.1
 
 # GENERAL REMARKS
@@ -59,137 +59,129 @@ input:
 
 
 
-move_forward:
-	# Calculate delta x
-	movsd angle, %xmm8
-	call cos
-	movsd %xmm8, %xmm12
-	mulsd speed, %xmm12
+	move_forward:
+		# Calculate delta x
+		movsd angle, %xmm8
+		call cos
+		movsd %xmm8, %xmm12
+		mulsd speed, %xmm12
 
-	# Calculate delta y
-	movsd angle, %xmm8
-	call sin
-	movsd %xmm8, %xmm13
-	mulsd speed, %xmm13
+		# Calculate delta y
+		movsd angle, %xmm8
+		call sin
+		movsd %xmm8, %xmm13
+		mulsd speed, %xmm13
 
-	# Add the deltas
-	movsd pos_x, %xmm3
-	addsd %xmm12, %xmm3
+		# Add the deltas
+		movsd pos_x, %xmm3
+		addsd %xmm12, %xmm3
 
-	movsd pos_y, %xmm4
-	addsd %xmm13, %xmm4
+		movsd pos_y, %xmm4
+		addsd %xmm13, %xmm4
 
-	call check_collision
+		call check_collision
+		jmp input_end
 
-	jmp input_end
+	move_back:
+		# Calculate delta x
+		movsd angle, %xmm8
+		call cos
+		movsd %xmm8, %xmm12
+		mulsd speed, %xmm12
 
-move_back:
-	# Calculate delta x
-	movsd angle, %xmm8
-	call cos
-	movsd %xmm8, %xmm12
-	mulsd speed, %xmm12
+		# Calculate delta y
+		movsd angle, %xmm8
+		call sin
+		movsd %xmm8, %xmm13
+		mulsd speed, %xmm13
 
-	# Calculate delta y
-	movsd angle, %xmm8
-	call sin
-	movsd %xmm8, %xmm13
-	mulsd speed, %xmm13
+		# Subtract the deltas
+		movsd pos_x, %xmm3
+		subsd %xmm12, %xmm3
 
-	# Subtract the deltas
-	movsd pos_x, %xmm3
-	subsd %xmm12, %xmm3
+		movsd pos_y, %xmm4
+		subsd %xmm13, %xmm4
 
-	movsd pos_y, %xmm4
-	subsd %xmm13, %xmm4
-
-	call check_collision
-
-	jmp input_end
+		call check_collision
+		jmp input_end
 
 
-move_right:
-	# Calculate delta x
-	movsd angle, %xmm8
-	call cos
-	movsd %xmm8, %xmm12
-	mulsd speed, %xmm12
+	move_right:
+		# Calculate delta x
+		movsd angle, %xmm8
+		call cos
+		movsd %xmm8, %xmm12
+		mulsd speed, %xmm12
 
-	# Calculate delta y
-	movsd angle, %xmm8
-	call sin
-	movsd %xmm8, %xmm13
-	mulsd speed, %xmm13
+		# Calculate delta y
+		movsd angle, %xmm8
+		call sin
+		movsd %xmm8, %xmm13
+		mulsd speed, %xmm13
 
-	# do pos + (-delta_y, delta_x)
-	movsd pos_x, %xmm3
-	subsd %xmm13, %xmm3
+		# do pos + (-delta_y, delta_x)
+		movsd pos_x, %xmm3
+		subsd %xmm13, %xmm3
 
-	movsd pos_y, %xmm4
-	addsd %xmm12, %xmm4
+		movsd pos_y, %xmm4
+		addsd %xmm12, %xmm4
 
-	call check_collision
+		call check_collision
+		jmp input_end
 
-	jmp input_end
+	move_left:
+		# Calculate delta x
+		movsd angle, %xmm8
+		call cos
+		movsd %xmm8, %xmm12
+		mulsd speed, %xmm12
 
-	jmp input_end
+		# Calculate delta y
+		movsd angle, %xmm8
+		call sin
+		movsd %xmm8, %xmm13
+		mulsd speed, %xmm13
 
-move_left:
-	# Calculate delta x
-	movsd angle, %xmm8
-	call cos
-	movsd %xmm8, %xmm12
-	mulsd speed, %xmm12
+		# do pos + delta_y, -delta_x)
+		movsd pos_x, %xmm3
+		addsd %xmm13, %xmm3
 
-	# Calculate delta y
-	movsd angle, %xmm8
-	call sin
-	movsd %xmm8, %xmm13
-	mulsd speed, %xmm13
+		movsd pos_y, %xmm4
+		subsd %xmm12, %xmm4
 
-	# do pos + delta_y, -delta_x)
-	movsd pos_x, %xmm3
-	addsd %xmm13, %xmm3
+		call check_collision
+		jmp input_end
 
-	movsd pos_y, %xmm4
-	subsd %xmm12, %xmm4
+	rotate_left:
+		movsd angle, %xmm5
+		subsd angle_speed, %xmm5
+		jmp clamp_rotation
 
-	call check_collision
+	rotate_right:
+		movsd angle, %xmm5
+		addsd angle_speed, %xmm5
+		jmp clamp_rotation
 
-	jmp input_end
+		clamp_rotation:
+			comisd pi, %xmm5
+			jae sub_2pi
 
-	jmp input_end
+			comisd pi_neg, %xmm5
+			jb add_2pi
 
-rotate_left:
-	movsd angle, %xmm5
-	subsd angle_speed, %xmm5
-	jmp clamp_rotation
+			jmp clamp_end
 
-rotate_right:
-	movsd angle, %xmm5
-	addsd angle_speed, %xmm5
-	jmp clamp_rotation
+		sub_2pi:
+			subsd tau, %xmm5
+			jmp clamp_end
 
-clamp_rotation:
-	comisd pi, %xmm5
-	jae sub_2pi
+		add_2pi:
+			addsd tau, %xmm5
+			jmp clamp_end
 
-	comisd pi_neg, %xmm5
-	jb add_2pi
-
-	jmp clamp_end
-
-sub_2pi:
-	subsd tau, %xmm5
-	jmp clamp_end
-
-add_2pi:
-	addsd tau, %xmm5
-	jmp clamp_end
-
-clamp_end:
-	movsd %xmm5, angle
-	jmp input_end
+		clamp_end:
+			movsd %xmm5, angle
+			jmp input_end
 
 input_end:
 	mov %rbp, %rsp
@@ -210,7 +202,6 @@ check_collision:
 	# %rdi has trunc(x)
 	# %rsi has trunc(y)
 
-
 	# Boundchecks
 
 	# x boundcheck (0 <= x < map_size)
@@ -228,25 +219,25 @@ check_collision:
 	# If outside box, allow
 	jmp check_collision_valid
 
-check_collision_inside:
-	# Convert scalar double to quad integer
-	cvttsd2si %xmm3, %rdi
-	cvttsd2si %xmm4, %rax
+	check_collision_inside:
+		# Convert scalar double to quad integer
+		cvttsd2si %xmm3, %rdi
+		cvttsd2si %xmm4, %rax
 
-	# multiply y with map_size to figure out row position, and add x to figure out column position
-	mulq map_size
-	add %rax, %rdi
+		# multiply y with map_size to figure out row position, and add x to figure out column position
+		mulq map_size
+		add %rax, %rdi
 
-	# Check if that position is 0
-	cmpb $0, game_map(%rdi)
-	je check_collision_valid
+		# Check if that position is 0
+		cmpb $0, game_map(%rdi)
+		je check_collision_valid
 
-	jmp check_collision_end
+		jmp check_collision_end
 
-check_collision_valid:
-	movsd %xmm3, pos_x
-	movsd %xmm4, pos_y
+	check_collision_valid:
+		movsd %xmm3, pos_x
+		movsd %xmm4, pos_y
 
-check_collision_end:
-	ret
+	check_collision_end:
+		ret
 
