@@ -7,6 +7,7 @@ delta_ray_x: .double 0.0
 delta_ray_y: .double 0.0
 
 .text
+
 render_distance: .quad 4096
 raycast_size: .double 0.01
 
@@ -70,12 +71,23 @@ raycast_check:
 	# Check collision 
     call collision_ray
 
-    cmp render_distance, %r15
+	cmp render_distance, %r15
     jge above_render_distance 
 
 	# Loop if not collided
     cmp $0, %rax
 	je raycast_check
+
+	# cmp $1, %rax
+	# je exit_raycast_check
+
+	# jmp shit
+	jmp exit_raycast_check
+
+shit:
+	mov $game_map, %rdx
+	mov $1, %rdi
+	call exit
 	# je exit_raycast_check
 
     # jmp raycast_check
@@ -101,26 +113,44 @@ collision_ray:
     mov %rsp, %rbp
 
     # Convert scalar double to quad integer
-	cvttsd2si %xmm9, %rdi
+	cvttsd2si %xmm9, %rcx
 	cvttsd2si %xmm10, %rax
     
     # mov map_size, %rbx
     # inc %rbx
 
     # jump if it is above map size + 1, meaning if it is out of bounds
-    cmp map_size, %rdi
-    jg set_out_of_bounds
+	cmp $0, %rcx
+	jl set_out_of_bounds
+
+    cmp map_size, %rcx
+    jge set_out_of_bounds
+
+	cmp $0, %rax
+	jl set_out_of_bounds
 
     cmp map_size, %rax
-    jg set_out_of_bounds
+    jge set_out_of_bounds
 
 	# multiply y with map_size to figure out row position, and add by x to figure out column position
 	mulq map_size
-	add %rax, %rdi
+	add %rax, %rcx
 
+	# mov $map, %rdx
+	# add %rdx, %rcx
+	add $game_map, %rcx
 	# Get value of position to %rax
 	movq $0, %rax
-	movb map(%rdi), %al
+	movb (%rcx), %al
+
+	# Debug
+	cmp $0, %rax
+	je exit_collision_ray
+
+	cmp $1, %rax
+	je exit_collision_ray
+
+	jmp shit
 
 exit_collision_ray:
     movq %rbp, %rsp

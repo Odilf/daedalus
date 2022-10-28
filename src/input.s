@@ -1,3 +1,5 @@
+# .include "map/map.s"
+
 .bss
 last_key: .quad 0
 
@@ -236,7 +238,7 @@ check_collision_inside:
 	add %rax, %rdi
 
 	# Check if that position is 0
-	cmpb $0, map(%rdi)
+	cmpb $0, game_map(%rdi)
 	je check_collision_valid
 
 	jmp check_collision_end
