@@ -20,4 +20,4 @@ end
 normal = "src/map/map.txt"
 debug = "src/map/map_debug.txt"
 
-generate_map(debug)
+generate_map(normal)

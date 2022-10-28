@@ -71,11 +71,14 @@ raycast_check:
     call collision_ray
 
     cmp render_distance, %r15
-    je above_render_distance 
+    jge above_render_distance 
 
 	# Loop if not collided
     cmp $0, %rax
-    je raycast_check
+	je raycast_check
+	# je exit_raycast_check
+
+    # jmp raycast_check
 
 exit_raycast_check:
     # Move ray length to %rax (output)
@@ -101,20 +104,22 @@ collision_ray:
 	cvttsd2si %xmm9, %rdi
 	cvttsd2si %xmm10, %rax
     
-    mov map_size, %rbx
-    inc %rbx
+    # mov map_size, %rbx
+    # inc %rbx
 
     # jump if it is above map size + 1, meaning if it is out of bounds
-    cmp %rdi, %rbx
-    je set_out_of_bounds
-    cmp %rax, %rbx
-    je set_out_of_bounds
+    cmp map_size, %rdi
+    jg set_out_of_bounds
 
-	# multiply y with map_size to figure out row positionm, and add by x to figure out column position
+    cmp map_size, %rax
+    jg set_out_of_bounds
+
+	# multiply y with map_size to figure out row position, and add by x to figure out column position
 	mulq map_size
 	add %rax, %rdi
 
 	# Get value of position to %rax
+	movq $0, %rax
 	movb map(%rdi), %al
 
 exit_collision_ray:
@@ -123,5 +128,5 @@ exit_collision_ray:
     ret
 
 set_out_of_bounds:
-    mov $1, %rax
+    mov $0, %rax
     jmp exit_collision_ray
