@@ -2,8 +2,12 @@
 
 .data
 
-rows: .quad 32
-columns: .quad 150
+file: .quad 0
+
+
+screen_size:
+	rows: .quad 32
+	columns: .quad 150
 
 .text
 
@@ -13,6 +17,9 @@ newline: .asciz "\n"
 
 color_template: .asciz "\033[38;2;%.0f;%.0f;%.0fm█"
 
+window_size_filename: .asciz "build/window_size.daedalus"
+file_open_mode: .asciz "rb"
+
 
 # Setup for rendering
 # Right now, screen is only cleared at the start. Don't know if that's a bad idea
@@ -20,6 +27,9 @@ render_setup:
 	# Clear screen
 	mov $clear_screen, %rdi
 	call printf
+
+	# Get window size from file
+	call get_window_size
 
 	# Dynamically cache the half_columns and half_rows variables
 	mov columns, %rdi
@@ -35,6 +45,37 @@ render_setup:
 	movsd %xmm9, max_column_height
 
 	ret
+
+get_window_size:
+	push %rbp
+	mov %rsp, %rbp
+
+	# Open the file
+	mov $window_size_filename, %rdi
+	mov $file_open_mode, %rsi
+	call fopen
+
+	mov %rax, file
+
+	cmp $0, %rax
+	je get_window_size_end
+
+	# Read two quads
+	mov $screen_size, %rdi
+	mov $8, %rsi
+	mov $2, %rdx
+	mov file, %rcx
+	call fread
+
+	# Close the file
+	mov file, %rdi
+	call fclose
+
+	get_window_size_end: 
+		mov %rbp, %rsp
+		pop %rbp
+
+		ret
 
 
 # Render goes through each "pixel" in the screen and calls `shader`. 
