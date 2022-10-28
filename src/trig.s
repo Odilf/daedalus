@@ -29,36 +29,36 @@ cos:
 	movsd one, %xmm11
 	jmp cos_main
 
-cos_sub_pi:
-	subsd pi, %xmm8
-	jmp cos_main
+	cos_sub_pi:
+		subsd pi, %xmm8
+		jmp cos_main
 
-cos_add_pi:
-	addsd pi, %xmm8
-	jmp cos_main
+	cos_add_pi:
+		addsd pi, %xmm8
+		jmp cos_main
 
-# Main Taylor series calculation
-cos_main:
-	movsd %xmm8, %xmm9
-	movsd %xmm8, %xmm10
+	# Main Taylor series calculation
+	cos_main:
+		movsd %xmm8, %xmm9
+		movsd %xmm8, %xmm10
 
-	mulsd %xmm8, %xmm9	# %xmm9 has x^2
-	divsd two, %xmm9		# %xmm9 has x^2/2
+		mulsd %xmm8, %xmm9	# %xmm9 has x^2
+		divsd two, %xmm9	# %xmm9 has x^2/2
 
 
-	mulsd %xmm8, %xmm10	# %xmm10 has x^2
-	mulsd %xmm8, %xmm10	# %xmm10 has x^3
-	mulsd %xmm8, %xmm10	# %xmm10 has x^4
-	divsd twenty_four, %xmm10	# %xmm10 has x^4 / 4!
-	
-	# 1 - x^2/2! + x^4/4!
-	movsd one, %xmm8
-	subsd %xmm9, %xmm8
-	addsd %xmm10, %xmm8
+		mulsd %xmm8, %xmm10	# %xmm10 has x^2
+		mulsd %xmm8, %xmm10	# %xmm10 has x^3
+		mulsd %xmm8, %xmm10	# %xmm10 has x^4
+		divsd twenty_four, %xmm10	# %xmm10 has x^4 / 4!
+		
+		# 1 - x^2/2! + x^4/4!
+		movsd one, %xmm8
+		subsd %xmm9, %xmm8
+		addsd %xmm10, %xmm8
 
-	mulsd %xmm11, %xmm8
+		mulsd %xmm11, %xmm8
 
-	ret
+		ret
 
 # Input (call it x) is passed in %xmm8
 # Modifies %xmm9 and %xmm10
@@ -75,33 +75,33 @@ sin:
 	movsd one, %xmm11
 	jmp sin_main
 
-sin_sub_pi:
-	subsd pi, %xmm8
-	jmp sin_main
+	sin_sub_pi:
+		subsd pi, %xmm8
+		jmp sin_main
 
-sin_add_pi:
-	addsd pi, %xmm8
-	jmp sin_main
+	sin_add_pi:
+		addsd pi, %xmm8
+		jmp sin_main
 
-sin_main:
-	movsd %xmm8, %xmm9
-	movsd %xmm8, %xmm10
+	sin_main:
+		movsd %xmm8, %xmm9
+		movsd %xmm8, %xmm10
 
-	mulsd %xmm8, %xmm9	# %xmm9 has x^2
-	mulsd %xmm8, %xmm9	# %xmm9 has x^3
-	divsd six, %xmm9	# %xmm9 has x^3/3!
+		mulsd %xmm8, %xmm9	# %xmm9 has x^2
+		mulsd %xmm8, %xmm9	# %xmm9 has x^3
+		divsd six, %xmm9	# %xmm9 has x^3/3!
 
 
-	mulsd %xmm8, %xmm10				# %xmm10 has x^2
-	mulsd %xmm8, %xmm10				# %xmm10 has x^3
-	mulsd %xmm8, %xmm10				# %xmm10 has x^4
-	mulsd %xmm8, %xmm10				# %xmm10 has x^5
-	divsd hundred_twenty, %xmm10	# %xmm10 has x^5 / 5!
-	
-	# x - x^3/3! + x^5/5!
-	subsd %xmm9, %xmm8
-	addsd %xmm10, %xmm8
+		mulsd %xmm8, %xmm10				# %xmm10 has x^2
+		mulsd %xmm8, %xmm10				# %xmm10 has x^3
+		mulsd %xmm8, %xmm10				# %xmm10 has x^4
+		mulsd %xmm8, %xmm10				# %xmm10 has x^5
+		divsd hundred_twenty, %xmm10	# %xmm10 has x^5 / 5!
+		
+		# x - x^3/3! + x^5/5!
+		subsd %xmm9, %xmm8
+		addsd %xmm10, %xmm8
 
-	mulsd %xmm11, %xmm8
+		mulsd %xmm11, %xmm8
 
-	ret
+		ret
