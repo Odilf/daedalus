@@ -9,7 +9,7 @@
 
 main:
 	call set_termios_non_canonical
-	call render_start
+	call render_setup
 
 game_loop:
 	call render

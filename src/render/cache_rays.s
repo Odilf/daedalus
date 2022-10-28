@@ -2,15 +2,14 @@
 
 .data
 
-# Make sure this is the same as columns
-column_length_cache: .skip 128
+column_length_cache: .skip 4096
+max_column_height: .double 0.0
 
 .text
 
-column_height_scalar: .double 8000.0
-max_column_height: .double 32.0
+column_height_scalar: .double 5792.0
 
-angle_delta: .double 0.008 # in radians
+angle_delta: .double 0.01 # in radians
 
 cache_column_lengths:
 	push %r15
@@ -36,7 +35,7 @@ cache_column_loop:
 	movsd one, %xmm10
 	divsd %xmm9, %xmm10
 	mulsd column_height_scalar, %xmm10
-	maxss max_column_height, %xmm10		# Clamp to 32
+	minsd max_column_height, %xmm10		# Clamp to 32
 	cvttsd2si %xmm10, %rsi
 
 	# Store the resulting column size in column_length_cache

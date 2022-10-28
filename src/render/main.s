@@ -1,5 +1,10 @@
 .include "render/shader.s"
 
+.data
+
+rows: .quad 32
+columns: .quad 150
+
 .text
 
 clear_screen: .asciz "\033[2J"
@@ -13,13 +18,9 @@ terminal_background_color: .asciz "\033[48;2;64;0;5m"
 
 newline: .asciz "\n"
 
-# Maybe these could be defined as macros?
-rows: .quad 32
-columns: .quad 128
-
 # Setup for rendering
 # Right now, screen is only cleared at the start. Don't know if that's a bad idea
-render_start: 
+render_setup: 
 	# Clear screen
 	mov $clear_screen, %rdi
 	call printf
@@ -32,6 +33,10 @@ render_start:
 	mov rows, %rdi
 	shr $1, %rdi
 	mov %rdi, half_rows
+
+	# Convert rows into float for SSE operations
+	cvtsi2sd rows, %xmm9
+	movsd %xmm9, max_column_height
 
 	ret
 

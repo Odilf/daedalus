@@ -48,5 +48,5 @@ set_termios_non_canonical:
 	mov $0x5402, %rsi	# TCSETS
 	mov $termios, %rdx	# pointer to struct
 	syscall
-
+	
 	ret
