@@ -8,7 +8,7 @@
 
 .data
 
-screen: .quad 1
+screen: .quad 0
 
 .text
 
@@ -17,7 +17,10 @@ main:
 	call render_setup
 
 main_loop:
-	cmp $1, screen
+	cmpq $0, screen
+	je g_intro
+
+	cmpq $1, screen
 	je game
 
 	jmp epilogue
