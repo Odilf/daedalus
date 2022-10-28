@@ -10,8 +10,8 @@ half_columns: .quad 0
 max: .double 255.0
 half: .double 127.5
 
-min_column_height: .quad 8
-half_min_column_height: .quad 4
+min_column_height: .quad 4
+half_min_column_height: .quad 2
 
 background_color:
 	.double 70.0
