@@ -127,7 +127,7 @@ render:
 			jl render_row_loop
 
 	render_row_end:
-		# Newline, but fancier lol
+		# Print a new line
 		mov $newline, %rdi
 		call printf
 
@@ -138,8 +138,10 @@ render:
 
 render_end:
 	# Flush buffer
-	mov $newline, %rdi
-	call printf
+	# mov $0, %rdi
+	# call fflush
+	# mov $newline, %rdi
+	# call printf
 
 	# Restore callee-saved registers
 	pop %r13
