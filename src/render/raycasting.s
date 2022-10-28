@@ -114,9 +114,8 @@ collision_ray:
 
 	cmp $0, %rax
 	jl set_out_of_bounds
-
     cmp map_size, %rax
-    jg set_out_of_bounds
+    jge set_out_of_bounds
 
 	# multiply y with map_size to figure out row position, and add by x to figure out column position
 	mulq map_size

@@ -5,9 +5,9 @@ last_key: .quad 0
 
 .data
 
-pos_x: .double 3.0
-pos_y: .double 3.5
-angle: .double 1.57
+pos_x: .double 1.5
+pos_y: .double 11.0
+angle: .double -1.57
 
 .text
 

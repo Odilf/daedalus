@@ -7,7 +7,7 @@ max_column_height: .double 0.0
 
 .text
 
-column_height_scalar: .double 16384.0
+column_height_scalar: .double 9384.0
 
 angle_delta: .double 0.008 # in radians
 

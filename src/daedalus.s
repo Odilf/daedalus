@@ -2,8 +2,13 @@
 .include "render/main.s"
 .include "input.s"
 .include "trig.s"
+.include "screens/intro.s"
 
 .global main
+
+.data
+
+screen: .quad 1
 
 .text
 
@@ -11,11 +16,22 @@ main:
 	call set_termios_non_canonical
 	call render_setup
 
-game_loop:
-	call render
-	call input
+main_loop:
+	cmp $1, screen
+	je game
 
-	jmp game_loop
+	jmp epilogue
+
+	g_intro:
+		call intro
+
+		jmp main_loop
+
+	game:
+		call render
+		call input
+
+		jmp main_loop
 
 epilogue:
 	mov $0, %rdi
