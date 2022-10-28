@@ -4,7 +4,7 @@ function generate_map(input)
 	output = ".text \n\n"
 	map_size = split(map, '\n')[1] |> length
 	output *= "map_size: .quad $map_size \n\n"
-	output *= "map: \n"
+	output *= "game_map: \n"
 
 	for i in map
 		if i == '\n'

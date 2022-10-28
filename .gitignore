@@ -1,3 +1,4 @@
 build
 src/Makefile
 .DS_store
+.vscode

@@ -85,7 +85,7 @@ raycast_check:
 	jmp exit_raycast_check
 
 shit:
-	mov $game_map, %rdx
+	# mov $game_map, %rdx
 	mov $69, %rdi
 	call exit
 	# je exit_raycast_check
@@ -138,10 +138,10 @@ collision_ray:
 
 	# mov $map, %rdx
 	# add %rdx, %rcx
-	add $game_map, %rcx
+	# add $game_map, %rcx
 	# Get value of position to %rax
 	movq $0, %rax
-	movb (%rcx), %al
+	movb game_map(%rcx), %al
 
 	# Debug
 	cmp $0, %rax
