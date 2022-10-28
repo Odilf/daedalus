@@ -9,14 +9,10 @@ columns: .quad 150
 
 clear_screen: .asciz "\033[2J"
 reset_cursor_position: .asciz "\033[H"
-set_cursor_position_template: .asciz "\033[%d;%dH"
+newline: .asciz "\n"
 
-go_down: .asciz "\033[1E"
 color_template: .asciz "\033[38;2;%.0f;%.0f;%.0fm█"
 
-terminal_background_color: .asciz "\033[48;2;64;0;5m"
-
-newline: .asciz "\n"
 
 # Setup for rendering
 # Right now, screen is only cleared at the start. Don't know if that's a bad idea
@@ -91,7 +87,7 @@ render:
 
 	render_row_end:
 		# Newline, but fancier lol
-		mov $go_down, %rdi
+		mov $newline, %rdi
 		call printf
 
 		# Increment row and loop if not at the end
