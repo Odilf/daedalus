@@ -9,7 +9,7 @@ delta_ray_y: .double 0.0
 .text
 
 render_distance: .quad 4096
-raycast_size: .double 0.01
+raycast_size: .double 0.005
 
 # Will use %xmm8 to get angle in which it'll get distance for wall
 # distance will be in rax.
@@ -116,7 +116,7 @@ collision_ray:
 	jl set_out_of_bounds
 
     cmp map_size, %rax
-    jge set_out_of_bounds
+    jg set_out_of_bounds
 
 	# multiply y with map_size to figure out row position, and add by x to figure out column position
 	mulq map_size

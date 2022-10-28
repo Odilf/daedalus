@@ -10,7 +10,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -20,7 +20,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -30,7 +30,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -40,7 +40,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -50,7 +50,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -60,7 +60,7 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
 	.byte 0
@@ -70,14 +70,14 @@ game_map:
 	.byte 0
 	.byte 0
 	.byte 0
-	.byte 1
+	.byte 0
 
 	# new row
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
-	.byte 1
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0
+	.byte 0

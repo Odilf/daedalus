@@ -204,23 +204,24 @@ check_collision:
 
 	# Boundchecks
 
-	# x boundcheck (0 <= x < map_size)
+	# If x outside (0 <= x < map_size)
 	cmp $0, %rdi
-	jge check_collision_inside
+	jl check_collision_valid 
 	cmp map_size, %rdi
-	jl check_collision_inside
+	jge check_collision_valid 
 
-	# y boundcheck (0 <= y < map_size)
+	# If x inside (0 <= y < map_size)
 	cmp $0, %rsi
-	jge check_collision_inside
+	jl check_collision_valid 
 	cmp map_size, %rsi
-	jl check_collision_inside
+	jge check_collision_valid 
 
 	# If outside box, allow
-	jmp check_collision_valid
+	# jmp check_collision_end
 
 	check_collision_inside:
 		# Convert scalar double to quad integer
+		# Probably reduntand, but whatever
 		cvttsd2si %xmm3, %rdi
 		cvttsd2si %xmm4, %rax
 
