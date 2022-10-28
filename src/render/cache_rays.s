@@ -9,7 +9,7 @@ max_column_height: .double 0.0
 
 column_height_scalar: .double 5792.0
 
-angle_delta: .double 0.01 # in radians
+angle_delta: .double 0.008 # in radians
 
 cache_column_lengths:
 	push %r15
@@ -30,11 +30,20 @@ cache_column_loop:
 	movsd %xmm12, %xmm8 # Input
 	call raycast # Output is stored on %rax
 
+	movsd angle, %xmm8
+	subsd %xmm12, %xmm8
+	call cos
+	movsd %xmm8, %xmm11
+
 	# Convert from raycast length to column size
 	cvtsi2sd %rax, %xmm9
+	mulsd %xmm11, %xmm9
+	# sqrtsd %xmm9, %xmm9 # Square root?
+	# divsd %xmm11, %xmm9
 	movsd one, %xmm10
 	divsd %xmm9, %xmm10
 	mulsd column_height_scalar, %xmm10
+	# sqrtsd  %xmm10, %xmm10 # Also square constant
 	minsd max_column_height, %xmm10		# Clamp to 32
 	cvttsd2si %xmm10, %rsi
 
