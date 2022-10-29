@@ -3,12 +3,14 @@
 .include "input.s"
 .include "trig.s"
 .include "screens/intro.s"
+.include "screens/pause.s"
 
 .global main
 
 .data
 
 screen: .quad 0
+last_screen: .quad 0
 
 .text
 
@@ -17,18 +19,15 @@ main:
 	call render_setup
 
 main_loop:
+	# Get screen and print it
+	cmpq $-1, screen
+	je g_pause
+
 	cmpq $0, screen
 	je g_intro
 
 	cmpq $1, screen
 	je game
-
-	jmp epilogue
-
-	g_intro:
-		call intro
-
-		jmp main_loop
 
 	game:
 		call render
@@ -36,6 +35,11 @@ main_loop:
 
 		jmp main_loop
 
-epilogue:
-	mov $0, %rdi
-	call exit
+	g_intro:
+		call intro
+		jmp main_loop
+
+	# Exit point is here
+	g_pause:
+		call show_pause
+		jmp main_loop

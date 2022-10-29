@@ -54,6 +54,9 @@ input:
 	cmp $0x6A, %rdi		# last_key == 'j'?
 	je rotate_left
 
+	cmp $0x70, %rdi		# last_key == 'p'?
+	je pause_game
+
 	# Ignore everything else
 	jmp input_end
 
@@ -182,6 +185,13 @@ input:
 		clamp_end:
 			movsd %xmm5, angle
 			jmp input_end
+
+
+	pause_game:
+		mov screen, %rdi
+		mov %rdi, last_screen
+		movq $-1, screen
+		jmp input_end
 
 input_end:
 	mov %rbp, %rsp
