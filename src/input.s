@@ -248,7 +248,7 @@ check_collision:
 		# Check if that position is 0
 		mov $0, %rax
 		movb (%rdi), %al
-		and $0x0, %rax
+		and $0x01, %rax
 		cmpb $0, %al
 		je check_collision_valid
 
