@@ -278,7 +278,7 @@ cutscene_3:
 		# --- 
 
 	# Set that you can't see OOB
-	movq $1, collision_mode
+	movq $1, oob_collision_mode
 
 	# Move random memory as map
 	mov $map, %rdi

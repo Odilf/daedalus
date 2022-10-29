@@ -132,5 +132,5 @@ exit_collision_ray:
     ret
 
 set_out_of_bounds:
-    mov collision_mode, %rax
+    mov oob_collision_mode, %rax
     jmp exit_collision_ray

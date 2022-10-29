@@ -10,12 +10,12 @@ pos_y: .double 0.0
 angle: .double -1.57
 
 # The value to use if something is outside the map
-collision_mode: .quad 0
+oob_collision_mode: .quad 0
 
 .text
 
 speed: .double  0.31415
-angle_speed: .double 0.1
+angle_speed: .double 0.2
 
 # GENERAL REMARKS
 
@@ -248,7 +248,7 @@ check_collision:
 		# Check if that position is 0
 		mov $0, %rax
 		movb (%rdi), %al
-		and $0x01, %rax
+		and $0x0, %rax
 		cmpb $0, %al
 		je check_collision_valid
 
@@ -262,7 +262,7 @@ check_collision:
 		ret
 
 	check_collision_oob:
-		cmpq $0, collision_mode
+		cmpq $0, oob_collision_mode
 		je check_collision_valid
 
 		jmp check_collision_end
