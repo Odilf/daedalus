@@ -137,12 +137,6 @@ render:
 		jl render_loop
 
 render_end:
-	# Flush buffer
-	# mov $0, %rdi
-	# call fflush
-	# mov $newline, %rdi
-	# call printf
-
 	# Restore callee-saved registers
 	pop %r13
 	pop %r12
