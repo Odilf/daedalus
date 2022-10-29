@@ -5,8 +5,8 @@ last_key: .quad 0
 
 .data
 
-pos_x: .double 1.5
-pos_y: .double 11.0
+pos_x: .double 0.0
+pos_y: .double 0.0
 angle: .double -1.57
 
 .text
@@ -213,6 +213,8 @@ check_collision:
 	# %rsi has trunc(y)
 
 	# Boundchecks
+	cmp $-2, %rsi
+	jle fade_and_advance_screen 
 
 	# If x outside (0 <= x < map_size)
 	cmp $0, %rdi
@@ -220,7 +222,7 @@ check_collision:
 	cmp map_size, %rdi
 	jge check_collision_valid 
 
-	# If x inside (0 <= y < map_size)
+	# If y outside (0 <= y < map_size)
 	cmp $0, %rsi
 	jl check_collision_valid 
 	cmp map_size, %rsi
@@ -253,3 +255,12 @@ check_collision:
 	check_collision_end:
 		ret
 
+place_player:
+	movsd three_halves, %xmm14
+	movsd %xmm14, pos_x
+	
+	cvtsi2sd map_size, %xmm14
+	addsd two, %xmm14
+	movsd %xmm14, pos_y
+
+	ret

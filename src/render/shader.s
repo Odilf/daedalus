@@ -1,5 +1,9 @@
 .include "./render/cache_rays.s"
 
+.data
+
+fade_amount: .double 1.0
+
 .bss
 
 half_rows: .quad 0
@@ -12,6 +16,8 @@ half: .double 127.5
 
 min_column_height: .quad 4
 half_min_column_height: .quad 2
+
+fade_delta: .double 0.1
 
 background_color:
 	.double 70.0
@@ -160,10 +166,42 @@ shader_end:
 	minsd max, %xmm1
 	minsd max, %xmm2
 
+	mulsd fade_amount, %xmm0
+	mulsd fade_amount, %xmm1
+	mulsd fade_amount, %xmm2
+
 	ret
 	
 
+fade_in:
+	movsd zero, %xmm14
+	movsd %xmm14, fade_amount
+	call render
 
+	fade_in_loop:
+		addsd fade_delta, %xmm14
+		movsd %xmm14, fade_amount
+		call render
+
+		comisd one, %xmm14
+		jb fade_in_loop
+
+	ret
+
+fade_out:
+	movsd one, %xmm14
+	movsd %xmm14, fade_amount
+	call render
+
+	fade_out_loop:
+		subsd fade_delta, %xmm14
+		movsd %xmm14, fade_amount
+		call render
+
+		comisd zero, %xmm14
+		ja fade_out_loop
+
+	ret
 
 
 

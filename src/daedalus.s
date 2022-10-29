@@ -4,6 +4,7 @@
 .include "trig.s"
 .include "screens/intro.s"
 .include "screens/pause.s"
+.include "screens/cutscene_1.s"
 
 .global main
 
@@ -24,10 +25,10 @@ main_loop:
 	je g_pause
 
 	cmpq $0, screen
-	je g_intro
+	je intro
 
-	cmpq $1, screen
-	je game
+	cmpq $2, screen
+	je cutscene_1
 
 	game:
 		call render
@@ -35,11 +36,13 @@ main_loop:
 
 		jmp main_loop
 
-	g_intro:
-		call intro
-		jmp main_loop
-
 	# Exit point is here
 	g_pause:
 		call show_pause
 		jmp main_loop
+
+fade_and_advance_screen:
+	call fade_out
+advance_screen:
+	add $1, screen
+	jmp main_loop

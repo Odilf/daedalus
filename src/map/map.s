@@ -1,8 +1,8 @@
 .data
 
-game_map: .quad map_2
+game_map: .quad map_1
 
-map_size: .quad 16
+map_size: .quad 8
 
 .text
 

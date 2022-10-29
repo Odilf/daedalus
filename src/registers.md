@@ -9,7 +9,7 @@
 - `%xmm3`: x player position
 - `%xmm4`: y player position
 - `%xmm5`: Player angle
-- `%xmm6`: unused
+- `%xmm6`: Fade amount 
 - `%xmm7`: unused
 - `%xmm8`: Input for `sin` and `cos`
 - `%xmm9`: Modified by `sin` and `cos` and shader and raycast

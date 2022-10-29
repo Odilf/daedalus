@@ -3,6 +3,7 @@
 one_neg: .double -1.0
 zero: .double 0.0
 one: .double 1.0
+three_halves: .double 1.5
 two: .double 2.0
 six: .double 6.0
 twenty_four: .double 24.0
