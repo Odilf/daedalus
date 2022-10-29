@@ -1,10 +1,13 @@
 .text
 
 pause_text: 
-	.ascii "\033[38;2;255;255;255m"
-	.ascii "Game is paused. \n"
-	.ascii "Press `x` to exit. \n"
-	.asciz "Press any key to resume. \n\n"
+	.ascii "\033[0m"
+	.ascii "\033[1;3m"
+	.ascii "Game is paused. \n\n"
+	.ascii "\033[0m"
+	.ascii "Wove with `WASD`, rotate with `J` and `L`, pause with `P`. \n"
+	.ascii "Press `X` to exit. \n\n"
+	.asciz "Press `P` again to resume game. \n\n"
 
 show_pause:
 	mov $clear_screen, %rdi
@@ -22,6 +25,12 @@ show_pause:
 	cmpq $0x78, last_key
 	je quit
 
+	cmpq $0x70, last_key
+	je resume
+
+	jmp show_pause
+
+resume: 
 	movq last_screen, %rdi
 	mov %rdi, screen
 
