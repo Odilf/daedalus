@@ -13,6 +13,7 @@ c1_msg_8: .asciz "Good luck, then"
 
 cutscene_1:
 	push %r15
+	push %r15
 
 	# Scheme to stall for time
 	mov $0, %rdi
@@ -38,6 +39,7 @@ cutscene_1:
 	cmp $1, %rax
 	jl cutscene_1
 
+	pop %r15
 	pop %r15
 
 	# dialog:

@@ -174,6 +174,10 @@ shader_end:
 	
 
 fade_in:
+	# Prologue
+	push %rbp
+	mov %rsp, %rbp
+
 	movsd zero, %xmm14
 	movsd %xmm14, fade_amount
 	call render
@@ -186,9 +190,17 @@ fade_in:
 		comisd one, %xmm14
 		jb fade_in_loop
 
+	# Prologue
+	mov %rsp, %rbp
+	pop %rbp
+
 	ret
 
 fade_out:
+	# Prologue
+	push %rbp
+	mov %rsp, %rbp
+
 	movsd one, %xmm14
 	movsd %xmm14, fade_amount
 	call render
@@ -200,6 +212,10 @@ fade_out:
 
 		comisd zero, %xmm14
 		ja fade_out_loop
+
+	# Prologue
+	pop %rbp
+	mov %rsp, %rbp
 
 	ret
 

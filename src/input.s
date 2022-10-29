@@ -268,6 +268,10 @@ check_collision:
 		jmp check_collision_end
 
 place_player:
+	# Prologue
+	push %rbp
+	mov %rsp, %rbp
+
 	movsd three_halves, %xmm14
 	movsd %xmm14, pos_x
 	
@@ -277,5 +281,9 @@ place_player:
 
 	movsd pi_half_neg, %xmm14
 	movsd %xmm14, angle
+
+	# Epilogue
+	mov %rbp, %rsp
+	pop %rbp
 
 	ret

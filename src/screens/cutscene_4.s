@@ -20,6 +20,7 @@ bye_msg: .asciz "\033[38;2;%d;%d;%dmthis was actually kinda fun...\n"
 
 cutscene_4:
 	push %r15
+	push %r15
 
 	# Scheme to stall for time
 	mov $0, %rdi
@@ -45,6 +46,7 @@ cutscene_4:
 	cmp $1, %rax
 	jl cutscene_4
 
+	pop %r15
 	pop %r15
 
 	# dialog:
@@ -313,6 +315,7 @@ cutscene_4:
 		# --- 
 
 	push %r15
+	push %r15
 	mov $0, %r15
 	final_fade_in:
 		inc %r15
@@ -363,6 +366,7 @@ cutscene_4:
 		cmp $0, %r15
 		jge final_fade_out
 
+	pop %r15
 	pop %r15
 
 	mov $3, %rdi

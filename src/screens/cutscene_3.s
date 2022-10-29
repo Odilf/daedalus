@@ -22,6 +22,7 @@ c3_msg_14: .asciz "\033[38;2;154;10;10mWelcome to memory."
 
 cutscene_3:
 	push %r15
+	push %r15
 
 	# Scheme to stall for time
 	mov $0, %rdi
@@ -47,6 +48,7 @@ cutscene_3:
 	cmp $1, %rax
 	jl cutscene_3
 
+	pop %r15
 	pop %r15
 
 	# dialog:

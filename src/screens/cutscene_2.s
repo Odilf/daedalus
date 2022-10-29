@@ -13,6 +13,7 @@ c2_msg_8: .asciz "I believe in you."
 
 cutscene_2:
 	push %r15
+	push %r15
 
 	# Scheme to stall for time
 	mov $0, %rdi
@@ -38,6 +39,7 @@ cutscene_2:
 	cmp $1, %rax
 	jl cutscene_2
 
+	pop %r15
 	pop %r15
 
 	# dialog:
