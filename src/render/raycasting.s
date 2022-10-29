@@ -120,9 +120,10 @@ collision_ray:
 	# multiply y with map_size to figure out row position, and add by x to figure out column position
 	mulq map_size
 	add %rax, %rcx
+	add game_map, %rcx
 
 	movq $0, %rax
-	movb game_map(%rcx), %al
+	movb (%rcx), %al
 
 exit_collision_ray:
     movq %rbp, %rsp

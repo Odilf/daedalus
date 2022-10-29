@@ -238,9 +238,10 @@ check_collision:
 		# multiply y with map_size to figure out row position, and add x to figure out column position
 		mulq map_size
 		add %rax, %rdi
+		add game_map, %rdi
 
 		# Check if that position is 0
-		cmpb $0, game_map(%rdi)
+		cmpb $0, (%rdi)
 		je check_collision_valid
 
 		jmp check_collision_end

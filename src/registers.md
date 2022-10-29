@@ -15,8 +15,8 @@
 - `%xmm9`: Modified by `sin` and `cos` and shader and raycast
 - `%xmm10`: Modified by `sin` and `cos` and shader and raycast
 - `%xmm11`: Modified by `sin` and `cos` and shader
-- `%xmm12`: unused
-- `%xmm13`: unused
+- `%xmm12`: Modified by stuff
+- `%xmm13`: Modified by stuff
 - `%xmm14`: unused
 - `%xmm15`: unused
 - `%xmm16`: unused
