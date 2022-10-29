@@ -9,6 +9,9 @@ pos_x: .double 0.0
 pos_y: .double 0.0
 angle: .double -1.57
 
+# The value to use if something is outside the map
+collision_mode: .quad 0
+
 .text
 
 speed: .double  0.31415
@@ -218,15 +221,15 @@ check_collision:
 
 	# If x outside (0 <= x < map_size)
 	cmp $0, %rdi
-	jl check_collision_valid 
+	jl check_collision_oob 
 	cmp map_size, %rdi
-	jge check_collision_valid 
+	jge check_collision_oob 
 
 	# If y outside (0 <= y < map_size)
 	cmp $0, %rsi
-	jl check_collision_valid 
+	jl check_collision_oob 
 	cmp map_size, %rsi
-	jge check_collision_valid 
+	jge check_collision_oob 
 
 	# If outside box, allow
 	# jmp check_collision_end
@@ -243,7 +246,10 @@ check_collision:
 		add game_map, %rdi
 
 		# Check if that position is 0
-		cmpb $0, (%rdi)
+		mov $0, %rax
+		movb (%rdi), %al
+		and $0x01, %rax
+		cmpb $0, %al
 		je check_collision_valid
 
 		jmp check_collision_end
@@ -255,12 +261,21 @@ check_collision:
 	check_collision_end:
 		ret
 
+	check_collision_oob:
+		cmpq $0, collision_mode
+		je check_collision_valid
+
+		jmp check_collision_end
+
 place_player:
 	movsd three_halves, %xmm14
 	movsd %xmm14, pos_x
 	
 	cvtsi2sd map_size, %xmm14
-	addsd two, %xmm14
+	addsd one, %xmm14
 	movsd %xmm14, pos_y
+
+	movsd pi_half_neg, %xmm14
+	movsd %xmm14, angle
 
 	ret

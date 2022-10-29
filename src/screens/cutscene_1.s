@@ -12,24 +12,37 @@ c1_msg_7: .asciz "I would hurry up if I were you"
 c1_msg_8: .asciz "Good luck, then"
 
 cutscene_1:
+	push %r15
+
+	# Scheme to stall for time
+	mov $0, %rdi
+	call time
+	mov %rax, %r15
+
+	movq $clear_screen, %rdi
+	call printf
+
+	movq $press_any_key, %rdi
+	call printf
+	
 	mov $0, %rax		# read (
 	mov $1, %rdi		# 	stdin
 	mov $last_key, %rsi	# 	store in $last_key
-	mov $64, %rdx		# 	read 1 byte
+	mov $1, %rdx		# 	read 1 byte
 	syscall				# )
 
-	# dialog:
-		movq $press_any_key, %rdi
-		call printf
+	mov $0, %rdi
+	call time
+	sub %r15, %rax
 
+	cmp $1, %rax
+	jl cutscene_1
+
+	pop %r15
+
+	# dialog:
 		movq $clear_screen, %rdi
 		call printf
-		
-		mov $0, %rax		# read (
-		mov $1, %rdi		# 	stdin
-		mov $last_key, %rsi	# 	store in $last_key
-		mov $1, %rdx		# 	read 1 byte
-		syscall				# )
 
 		# --- 
 		

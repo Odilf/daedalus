@@ -5,6 +5,9 @@
 .include "screens/intro.s"
 .include "screens/pause.s"
 .include "screens/cutscene_1.s"
+.include "screens/cutscene_2.s"
+.include "screens/cutscene_3.s"
+.include "screens/cutscene_4.s"
 
 .global main
 
@@ -30,6 +33,15 @@ main_loop:
 	cmpq $2, screen
 	je cutscene_1
 
+	cmpq $4, screen
+	je cutscene_2
+
+	cmpq $6, screen
+	je cutscene_3
+
+	cmpq $8, screen
+	je cutscene_4
+
 	game:
 		call render
 		call input
@@ -43,6 +55,7 @@ main_loop:
 
 fade_and_advance_screen:
 	call fade_out
-advance_screen:
-	add $1, screen
-	jmp main_loop
+
+	advance_screen:
+		addq $1, screen
+		jmp main_loop

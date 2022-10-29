@@ -124,6 +124,7 @@ collision_ray:
 
 	movq $0, %rax
 	movb (%rcx), %al
+	and $0x01, %rax
 
 exit_collision_ray:
     movq %rbp, %rsp
@@ -131,5 +132,5 @@ exit_collision_ray:
     ret
 
 set_out_of_bounds:
-    mov $0, %rax
+    mov collision_mode, %rax
     jmp exit_collision_ray

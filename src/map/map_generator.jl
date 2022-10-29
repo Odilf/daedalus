@@ -45,8 +45,7 @@ const files = Dict(
 	"debug" => "src/map/map_debug.txt",
 	"map_1" => "src/map/map_1.txt",
 	"map_2" => "src/map/map_2.txt",
-	# "map_2" => "src/map/map_2.txt",
-	# "map_3" => "src/map/map_3.txt",
+	"map_3" => "src/map/map_3.txt",
 )
 
 generate_map(files, "src/map/map.s")
