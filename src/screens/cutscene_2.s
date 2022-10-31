@@ -42,6 +42,9 @@ cutscene_2:
 	pop %r15
 	pop %r15
 
+	# For stack alignment
+	push %r15
+	
 	# dialog:
 		movq $clear_screen, %rdi
 		call printf
@@ -174,6 +177,9 @@ cutscene_2:
 		syscall				# )
 
 		# --- 
+
+	# For stack alignment
+	pop %r15
 
 	mov $map_3, %rdi
 	mov %rdi, game_map

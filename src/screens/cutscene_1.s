@@ -14,6 +14,7 @@ c1_msg_8: .asciz "Good luck, then"
 cutscene_1:
 	push %r15
 
+
 	# Scheme to stall for time
 	mov $0, %rdi
 	call time
@@ -39,6 +40,9 @@ cutscene_1:
 	jl cutscene_1
 
 	pop %r15
+
+	# For stack alignment
+	push %r15
 
 	# dialog:
 		movq $clear_screen, %rdi
@@ -172,6 +176,9 @@ cutscene_1:
 		syscall				# )
 
 		# --- 
+
+	# For stack alignment
+	pop %r15
 
 	mov $map_2, %rdi
 	mov %rdi, game_map

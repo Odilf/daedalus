@@ -17,6 +17,7 @@ intro_msg_8: .asciz "It might be a good idea to try to get out of here"
 intro_msg_9: .asciz "Move with WASD, look with JL, pause with P."
 
 intro:
+	# For stack alignment
 	push %r15
 
 	# dialog:
@@ -175,6 +176,7 @@ intro:
 		# --- 
 
 	
+	# For stack alignment
 	pop %r15
 		
 

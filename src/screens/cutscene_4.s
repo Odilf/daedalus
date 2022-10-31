@@ -49,6 +49,9 @@ cutscene_4:
 	pop %r15
 	pop %r15
 
+	# For stack alignment
+	push %r15
+
 	# dialog:
 		movq $clear_screen, %rdi
 		call printf
@@ -314,8 +317,11 @@ cutscene_4:
 
 		# --- 
 
+	# For stack alignment
+	pop %r15
+	
 	push %r15
-	push %r15
+
 	mov $0, %r15
 	final_fade_in:
 		inc %r15
@@ -366,7 +372,6 @@ cutscene_4:
 		cmp $0, %r15
 		jge final_fade_out
 
-	pop %r15
 	pop %r15
 
 	mov $3, %rdi

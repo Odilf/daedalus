@@ -51,6 +51,9 @@ cutscene_3:
 	pop %r15
 	pop %r15
 
+	# For stack alignment
+	push %r15
+
 	# dialog:
 		movq $clear_screen, %rdi
 		call printf
@@ -279,6 +282,9 @@ cutscene_3:
 
 		# --- 
 
+	# For stack alignment
+	pop %r15
+	
 	# Set that you can't see OOB
 	movq $1, oob_collision_mode
 
