@@ -85,10 +85,10 @@ render:
 	push %rbp
 	mov %rsp, %rbp
 
+	push %r15
+
 	# Setup stuff for shader
 	call shader_setup
-
-	push %r15
 
 	# Reset cursor position
 	mov $reset_cursor_position, %rdi

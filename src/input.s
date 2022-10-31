@@ -25,8 +25,8 @@ angle_speed: .double 0.2
 # - xmm5: angle
 
 input:
-	push %rbp
-	mov %rsp, %rbp
+	// push %rbp
+	// mov %rsp, %rbp
 
 	# Read from stdin, store input in $last_key
 	mov $0, %rax		# read (
@@ -197,8 +197,8 @@ input:
 		jmp input_end
 
 input_end:
-	mov %rbp, %rsp
-	pop %rbp
+	// mov %rbp, %rsp
+	// pop %rbp
 
 	ret
 

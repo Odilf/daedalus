@@ -12,6 +12,9 @@ c1_msg_7: .asciz "I would hurry up if I were you"
 c1_msg_8: .asciz "Good luck, then"
 
 cutscene_1:
+	push %r15
+
+cutscene_1_loop:
 	# Scheme to stall for time
 	mov $0, %rdi
 	call time
@@ -34,7 +37,7 @@ cutscene_1:
 	sub %r15, %rax
 
 	cmp $1, %rax
-	jl cutscene_1
+	jl cutscene_1_loop
 
 	# dialog:
 		movq $clear_screen, %rdi
@@ -168,6 +171,8 @@ cutscene_1:
 		syscall				# )
 
 		# --- 
+
+	pop %r15
 
 	mov $map_2, %rdi
 	mov %rdi, game_map

@@ -13,8 +13,8 @@ c2_msg_8: .asciz "I believe in you."
 
 cutscene_2:
 	push %r15
-	push %r15
 
+cutscene_2_loop:
 	# Scheme to stall for time
 	mov $0, %rdi
 	call time
@@ -37,13 +37,7 @@ cutscene_2:
 	sub %r15, %rax
 
 	cmp $1, %rax
-	jl cutscene_2
-
-	pop %r15
-	pop %r15
-
-	# For stack alignment
-	push %r15
+	jl cutscene_2_loop
 	
 	# dialog:
 		movq $clear_screen, %rdi

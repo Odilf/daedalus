@@ -201,7 +201,7 @@ fade_out:
 	push %rbp
 	mov %rsp, %rbp
 
-	push %r15
+	// push %r15
 
 	movsd one, %xmm14
 	movsd %xmm14, fade_amount
@@ -216,7 +216,7 @@ fade_out:
 		ja fade_out_loop
 
 
-	pop %r15
+	// pop %r15
 
 	# Prologue
 	pop %rbp
