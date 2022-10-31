@@ -286,7 +286,7 @@ cutscene_3:
 	mov $map, %rdi
 	mov %rdi, game_map
 
-	mov $44, map_size
+	movq $44, map_size
 
 	call place_player
 
