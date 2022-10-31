@@ -17,7 +17,9 @@ intro_msg_8: .asciz "It might be a good idea to try to get out of here"
 intro_msg_9: .asciz "Move with WASD, look with JL, pause with P."
 
 intro:
-		# dialog:
+	push %r15
+
+	# dialog:
 		movq $intro_msg_1, %rdi
 		call printf 
 
@@ -173,7 +175,7 @@ intro:
 		# --- 
 
 	
-	
+	pop %r15
 		
 
 	# Move correct map
