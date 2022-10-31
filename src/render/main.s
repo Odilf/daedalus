@@ -88,6 +88,8 @@ render:
 	# Setup stuff for shader
 	call shader_setup
 
+	push %r15
+
 	# Reset cursor position
 	mov $reset_cursor_position, %rdi
 	call printf
@@ -109,7 +111,7 @@ render:
 		# Start at column 0
 		mov $0, %r12
 
-		render_row_loop:
+		render_row_loop:			
 			# Call shader for pixel
 			mov %r13, %rdi
 			mov %r12, %rsi
@@ -139,6 +141,7 @@ render_end:
 	# Restore callee-saved registers
 	pop %r13
 	pop %r12
+	pop %r15
 
 	# Epilogue for render
 	mov %rbp, %rsp
