@@ -83,7 +83,6 @@ get_window_size:
 render:
 	# Prologue for render
 	push %rbp
-	push %rbp
 	mov %rsp, %rbp
 
 	# Setup stuff for shader
@@ -143,7 +142,6 @@ render_end:
 
 	# Epilogue for render
 	mov %rbp, %rsp
-	pop %rbp
 	pop %rbp
 
 	ret
