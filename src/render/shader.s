@@ -190,7 +190,7 @@ fade_in:
 		comisd one, %xmm14
 		jb fade_in_loop
 
-	# Prologue
+	# Epilogue
 	mov %rsp, %rbp
 	pop %rbp
 
@@ -200,6 +200,8 @@ fade_out:
 	# Prologue
 	push %rbp
 	mov %rsp, %rbp
+
+	push %r15
 
 	movsd one, %xmm14
 	movsd %xmm14, fade_amount
@@ -212,6 +214,9 @@ fade_out:
 
 		comisd zero, %xmm14
 		ja fade_out_loop
+
+
+	pop %r15
 
 	# Prologue
 	pop %rbp
