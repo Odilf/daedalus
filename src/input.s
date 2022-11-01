@@ -15,7 +15,7 @@ oob_collision_mode: .quad 0
 .text
 
 speed: .double  0.31415
-angle_speed: .double 0.2
+angle_speed: .double 0.39269908169
 
 # GENERAL REMARKS
 

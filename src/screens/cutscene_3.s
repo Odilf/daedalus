@@ -283,7 +283,7 @@ cutscene_3_loop:
 	movq $1, oob_collision_mode
 
 	# Move random memory as map
-	mov $map, %rdi
+	mov $main, %rdi
 	mov %rdi, game_map
 
 	movq $44, map_size
