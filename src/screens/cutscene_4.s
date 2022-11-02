@@ -20,7 +20,7 @@ bye_msg: .asciz "\033[38;2;%d;%d;%dmthis was actually kinda fun...\n"
 
 cutscene_4:
 	push %r15
-	push %r15
+cutscene_4_loop:
 
 	# Scheme to stall for time
 	mov $0, %rdi
@@ -44,13 +44,7 @@ cutscene_4:
 	sub %r15, %rax
 
 	cmp $1, %rax
-	jl cutscene_4
-
-	pop %r15
-	pop %r15
-
-	# For stack alignment
-	push %r15
+	jl cutscene_4_loop
 
 	# dialog:
 		movq $clear_screen, %rdi
